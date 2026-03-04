@@ -1,0 +1,29 @@
+.app {
+  background-color: #f0f0f0;
+  color: #222;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+.app.dark {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffffaa;
+}
+
+.app.dark .navbar {
+  background-color: #333333aa;
+}
+
+.dark-toggle {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
