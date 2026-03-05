@@ -1,14 +1,84 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vishal Deshmukh | Full Stack Developer & UI/UX Enthusiast</title>
     
-    <title>my-protfolio</title>
+    <meta name="title" content="Vishal Deshmukh | Full Stack Developer" />
+    <meta name="description" content="Portfolio of Vishal Deshmukh - Specialized in MERN Stack, UI/UX Design, and building scalable web applications." />
+    <meta name="theme-color" content="#4f46e5" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vishal-portfolio.com/" />
+    <meta property="og:title" content="Vishal Deshmukh | Creative Developer" />
+    <meta property="og:description" content="Exploring the intersection of design and code. View my latest MERN stack projects." />
+    <meta property="og:image" content="https://vishal-portfolio.com/og-preview.png" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://vishal-portfolio.com/" />
+    <meta property="twitter:title" content="Vishal Deshmukh | Portfolio" />
+    <meta property="twitter:description" content="Building digital experiences that bridge the gap between imagination and reality." />
+    <meta property="twitter:image" content="https://vishal-portfolio.com/og-preview.png" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        background-color: #0a0a0c; /* Matches your new Dark Footer theme */
+      }
+      #loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0a0a0c;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out, visibility 0.5s;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(79, 70, 229, 0.1);
+        border-top-color: #4f46e5;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      .loader-hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+    </style>
   </head>
-  <body>
+
+  <body class="selection:bg-indigo-500 selection:text-white">
+    <div id="loader">
+      <div class="spinner"></div>
+    </div>
+
     <div id="root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
+
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loader");
+        setTimeout(() => {
+          loader.classList.add("loader-hidden");
+        }, 500); // Small delay for smooth transition
+      });
+    </script>
   </body>
 </html>
