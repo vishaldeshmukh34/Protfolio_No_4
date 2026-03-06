@@ -1,213 +1,260 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub, FaRocket, FaArrowRight, FaTimes, FaCheckCircle, FaCode } from "react-icons/fa";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { 
+  FaGithub, FaRocket, FaArrowRight, FaTimes, FaCode, 
+  FaLaptopCode, FaRobot, FaShoppingCart, FaPlayCircle, FaCar 
+} from "react-icons/fa";
 
-// Dummy Data Array (Replace with your actual imports)
+// --- EXPANDED PROJECT DATA ---
 const projectsData = [
   {
-    title: "Java MCQ App",
+    title: "Vishak Restaurant",
     category: "React",
-    desc: "A high-performance quiz engine with real-time score tracking.",
-    longDesc: "This application features a robust quiz logic system that handles various question types and tracks user progress through a sleek dashboard.",
-    tech: ["React.js", "JavaScript", "Tailwind"],
-    features: ["Instant Feedback", "Score History", "Mobile Optimized"],
-    live: "#",
-    code: "#",
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop"
+    desc: "Premium dining experience with fluid animations and cart logic.",
+    longDesc: "A high-end restaurant platform built for speed and aesthetics. Features include real-time menu filtering, a smooth glassmorphism cart, and optimized image delivery using React hooks.",
+    tech: ["React.js", "Tailwind CSS", "Framer Motion"],
+    icon: <FaShoppingCart />,
+    live: "https://vishakrestaurnt.netlify.app",
+    code: "https://github.com/vishaldeshmukh34/VishakRestaurant-",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
+    size: "large" 
   },
   {
-    title: "To-Do Master",
-    category: "JS",
-    desc: "Productivity tool featuring persistent storage and intuitive UI.",
-    longDesc: "Built with vanilla JavaScript, this app demonstrates complex DOM manipulation and local storage integration.",
-    tech: ["HTML", "CSS", "JavaScript"],
-    features: ["Local Storage", "Drag & Drop", "Filter Tasks"],
+    title: "Car Rental Web",
+    category: "Frontend",
+    desc: "Modern vehicle booking landing page with sleek UI.",
+    longDesc: "A fully responsive car rental website designed with a focus on typography and clean user paths. Built using pure HTML, CSS, and vanilla JavaScript for high performance.",
+    tech: ["HTML5", "CSS3", "JavaScript"],
+    icon: <FaCar />,
     live: "#",
-    code: "#",
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072&auto=format&fit=crop"
+    code: "https://github.com/vishaldeshmukh34/Car-Rental_project",
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
+    size: "medium"
   },
   {
-    title: "New Adventures",
-    category: "React",
-    desc: "Premium travel platform with smooth parallax effects.",
-    longDesc: "A visually driven landing page that uses Framer Motion for high-end animations responding to scroll depth.",
-    tech: ["React.js", "Tailwind", "Framer Motion"],
-    features: ["Parallax Scroll", "Smooth Reveal", "SVG Animations"],
+    title: "EduLearn Hub",
+    category: "MERN",
+    desc: "Full-stack education platform for roadmap tracking.",
+    longDesc: "A comprehensive LMS where students can visualize their learning journey through structured roadmaps. Features a robust backend with Node and Express.",
+    tech: ["MongoDB", "Express", "React", "Node"],
+    icon: <FaLaptopCode />,
     live: "#",
-    code: "#",
-    image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop"
+    code: "https://github.com/vishaldeshmukh34/LearnwWthVishal",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=2074&auto=format&fit=crop",
+    size: "medium"
+  },
+  {
+    title: "Amazon Clone",
+    category: "React",
+    desc: "E-commerce replica with full checkout functionality.",
+    longDesc: "A deep dive into complex UI components, replicating the Amazon shopping experience including cart management and stripe-integrated checkout simulations.",
+    tech: ["React", "Firebase", "CSS Modules"],
+    icon: <FaShoppingCart />,
+    live: "#",
+    code: "https://github.com/vishaldeshmukh34/Amazon-Clone",
+    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop",
+    size: "small"
+  },
+  {
+    title: "Netflix Clone",
+    category: "UI/UX",
+    desc: "Cinematic movie streaming dashboard with TMDB API.",
+    longDesc: "A visually stunning replica of the Netflix interface. Fetches real-time movie data and trailers, featuring a dynamic banner and horizontal scroll rows.",
+    tech: ["React", "TMDB API", "Axios"],
+    icon: <FaPlayCircle />,
+    live: "#",
+    code: "https://github.com/vishaldeshmukh34/Netflix-clone",
+    image: "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=2070&auto=format&fit=crop",
+    size: "medium"
+  },
+  {
+    title: "My Virtual Assistant",
+    category: "AI",
+    desc: "Voice-activated AI helper for task automation.",
+    longDesc: "A smart assistant capable of processing voice commands to perform web searches, open apps, and provide weather updates using Web Speech API.",
+    tech: ["JavaScript", "Web Speech API", "OpenWeather API"],
+    icon: <FaRobot />,
+    live: "#",
+    code: "https://github.com/vishaldeshmukh34/My-Virtual-Assistant",
+    image: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2070&auto=format&fit=crop",
+    size: "small"
   }
 ];
 
-function Projects() {
+// --- TILT CARD COMPONENT ---
+const ProjectCard = ({ project, onClick, idx }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  return (
+    <motion.div
+      layoutId={`card-${project.title}`}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: idx * 0.05 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
+      onClick={() => onClick(project)}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className={`group relative rounded-[2.5rem] border border-white/5 overflow-hidden cursor-pointer bg-[#111] 
+        ${project.size === 'large' ? 'md:col-span-2 md:row-span-2 h-[500px] md:h-auto' : 'h-[320px] md:h-auto'}
+        ${project.size === 'medium' ? 'md:col-span-2' : ''}
+        ${project.size === 'small' ? 'md:col-span-1' : ''}
+      `}
+    >
+      <div className="absolute inset-0 z-0">
+        <motion.img 
+          layoutId={`img-${project.title}`}
+          src={project.image} 
+          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1 group-hover:blur-[2px]"
+        />
+        <div className="absolute inset-0 bg-[#030305]/60 group-hover:bg-[#030305]/40 transition-colors" />
+      </div>
+
+      <div style={{ transform: "translateZ(40px)" }} className="absolute inset-0 p-8 flex flex-col justify-between z-20">
+        <div className="flex justify-between items-start">
+          <div className="bg-white/10 backdrop-blur-md p-3 rounded-2xl text-indigo-400 border border-white/10">
+            {project.icon}
+          </div>
+          <div className="bg-indigo-600/20 border border-indigo-500/30 px-3 py-1 rounded-full">
+            <span className="text-[9px] font-black uppercase tracking-tighter text-indigo-300">{project.category}</span>
+          </div>
+        </div>
+
+        <div>
+          <motion.h3 layoutId={`title-${project.title}`} className="text-3xl font-black mb-2 tracking-tighter text-white">
+            {project.title}
+          </motion.h3>
+          <p className="text-slate-400 text-xs line-clamp-2 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            {project.desc}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// --- MAIN SECTION ---
+const Projects = () => {
   const [filter, setFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
-  const categories = ["All", "React", "JS", "UI/UX"];
+  const categories = ["All", "React", "MERN", "Frontend", "AI", "UI/UX"];
 
   const filteredProjects = filter === "All" 
     ? projectsData 
     : projectsData.filter(p => p.category === filter);
 
-  // Lock scroll
   useEffect(() => {
     document.body.style.overflow = selectedProject ? "hidden" : "unset";
   }, [selectedProject]);
 
   return (
-    <section id="projects" className="py-20 md:py-32 px-4 md:px-6 bg-[#030305] text-white relative min-h-screen overflow-hidden">
+    <section id="projects" className="py-24 md:py-32 px-4 md:px-12 bg-[#030305] text-white relative min-h-screen">
       
-      {/* --- LIQUID WATERCOLOR BACKGROUND --- */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-indigo-600/20 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-purple-600/20 blur-[120px] rounded-full animate-pulse delay-1000" />
-      </div>
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 blur-[150px] rounded-full" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/10 blur-[150px] rounded-full" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-[1400px] mx-auto relative z-10">
         
-        {/* --- HEADER --- */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 md:mb-24 gap-8">
-          <div className="max-w-3xl">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="inline-block px-4 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-md mb-6"
-            >
-              <span className="text-indigo-400 font-bold tracking-widest uppercase text-[10px]">Portfolio Showcase</span>
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-5xl md:text-8xl font-black leading-[0.9] tracking-tighter"
-            >
-              DIGITAL <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-400 to-purple-500">
-                MASTERPIECES.
-              </span>
-            </motion.h2>
-          </div>
+        {/* Header */}
+        <div className="mb-20 space-y-6">
+          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="flex items-center gap-4">
+            <span className="h-[1px] w-12 bg-indigo-500" />
+            <span className="text-indigo-400 font-bold uppercase tracking-widest text-[10px]">Curated Portfolio</span>
+          </motion.div>
 
-          {/* --- FILTER BAR --- */}
-          <div className="flex flex-wrap gap-2 p-1 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                  filter === cat ? "bg-indigo-600 text-white shadow-lg" : "text-slate-400 hover:text-white"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+            <motion.h2 initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} className="text-6xl md:text-[120px] font-black tracking-tighter leading-none uppercase italic">
+              Major <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-cyan-400 to-purple-500">Works.</span>
+            </motion.h2>
+
+            <div className="flex flex-wrap gap-2 p-1 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-2xl">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                    filter === cat ? "bg-white text-black scale-105" : "text-slate-500 hover:text-white"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* --- GRID --- */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        {/* Bento Grid */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-4 gap-6 md:auto-rows-[300px]">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                layoutId={`card-${project.title}`}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                onClick={() => setSelectedProject(project)}
-                className="group cursor-pointer relative bg-white/[0.03] backdrop-blur-md rounded-[2.5rem] border border-white/10 overflow-hidden hover:border-indigo-500/50 transition-all duration-500"
-              >
-                <div className="h-64 overflow-hidden relative">
-                  <motion.img 
-                    layoutId={`img-${project.title}`}
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#030305] via-transparent to-transparent" />
-                </div>
-
-                <div className="p-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-[1px] bg-indigo-500" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">{project.category}</span>
-                  </div>
-                  <motion.h3 layoutId={`title-${project.title}`} className="text-2xl font-black mb-3 italic tracking-tight">
-                    {project.title}
-                  </motion.h3>
-                  <p className="text-slate-400 text-sm mb-6 line-clamp-2">{project.desc}</p>
-                  <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest group-hover:text-indigo-400 transition-colors">
-                    View Project <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
-                  </div>
-                </div>
-              </motion.div>
+            {filteredProjects.map((project, idx) => (
+              <ProjectCard key={project.title} project={project} onClick={setSelectedProject} idx={idx} />
             ))}
           </AnimatePresence>
         </motion.div>
 
-        {/* --- MOBILE RESPONSIVE MODAL --- */}
+        {/* Modal */}
         <AnimatePresence>
           {selectedProject && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 onClick={() => setSelectedProject(null)}
-                className="absolute inset-0 bg-black/80 backdrop-blur-2xl"
+                className="absolute inset-0 bg-black/95 backdrop-blur-3xl"
               />
 
               <motion.div 
                 layoutId={`card-${selectedProject.title}`}
-                className="relative w-full max-w-5xl bg-[#0a0a0c] rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl flex flex-col lg:flex-row max-h-[90vh] overflow-y-auto lg:overflow-hidden"
+                className="relative w-full max-w-6xl bg-[#0a0a0c] rounded-[3rem] border border-white/10 flex flex-col lg:flex-row h-[85vh] overflow-hidden"
               >
-                <button 
-                  onClick={() => setSelectedProject(null)}
-                  className="absolute top-6 right-6 z-50 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-                >
-                  <FaTimes />
-                </button>
-
-                {/* Modal Media */}
-                <div className="w-full lg:w-1/2 h-64 lg:h-auto">
+                <div className="w-full lg:w-3/5 h-[40%] lg:h-auto relative bg-[#111]">
                   <motion.img 
                     layoutId={`img-${selectedProject.title}`} 
                     src={selectedProject.image} 
                     className="w-full h-full object-cover" 
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-transparent via-[#0a0a0c]/20 to-[#0a0a0c]" />
                 </div>
 
-                {/* Modal Info */}
-                <div className="w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                  <motion.h3 layoutId={`title-${selectedProject.title}`} className="text-4xl md:text-5xl font-black mb-6 tracking-tighter">
-                    {selectedProject.title}
-                  </motion.h3>
-                  
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {selectedProject.tech.map(t => (
-                      <span key={t} className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-[10px] font-black rounded-lg border border-indigo-500/20 uppercase">
-                        {t}
-                      </span>
-                    ))}
+                <div className="w-full lg:w-2/5 p-10 md:p-14 flex flex-col justify-between overflow-y-auto">
+                  <div>
+                    <button onClick={() => setSelectedProject(null)} className="mb-10 text-slate-500 hover:text-white hover:rotate-90 transition-all">
+                      <FaTimes size={24} />
+                    </button>
+                    
+                    <span className="text-indigo-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">{selectedProject.category}</span>
+                    <motion.h3 layoutId={`title-${selectedProject.title}`} className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none italic">
+                      {selectedProject.title}
+                    </motion.h3>
+                    <p className="text-slate-400 leading-relaxed mb-10 text-sm md:text-base">
+                      {selectedProject.longDesc}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-10">
+                      {selectedProject.tech.map(t => (
+                        <span key={t} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-indigo-300">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <p className="text-slate-300 leading-relaxed mb-8 text-sm md:text-base">
-                    {selectedProject.longDesc}
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                    {selectedProject.features.map(f => (
-                      <div key={f} className="flex items-center gap-3 text-xs font-bold text-slate-400">
-                        <FaCheckCircle className="text-indigo-500" /> {f}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-                    <a href={selectedProject.live} className="flex-1 bg-indigo-600 hover:bg-indigo-500 py-4 rounded-xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-indigo-600/20">
-                      Live Link <FaRocket />
+                  <div className="flex gap-4">
+                    <a href={selectedProject.live} className="flex-1 bg-indigo-600 hover:bg-indigo-500 py-5 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all">
+                      Live <FaRocket />
                     </a>
-                    <a href={selectedProject.code} className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 py-4 rounded-xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all">
-                      Source Code <FaGithub />
+                    <a href={selectedProject.code} className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 py-5 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all">
+                      Code <FaGithub />
                     </a>
                   </div>
                 </div>
@@ -218,6 +265,6 @@ function Projects() {
       </div>
     </section>
   );
-}
+};
 
 export default Projects;

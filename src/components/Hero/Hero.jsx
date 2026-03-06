@@ -166,17 +166,57 @@ function Hero() {
 
               {/* Floating ID Card (Bottom Right) */}
               <motion.div 
-                animate={{ y: [0, 15, 0] }}
-                transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
-                className="absolute -right-4 -bottom-4 lg:-right-8 lg:-bottom-8 p-6 lg:p-10 bg-slate-950 rounded-[2.5rem] lg:rounded-[4rem] border border-white/10 shadow-2xl z-20"
-              >
-                <div className="space-y-1">
-                  <p className="text-indigo-400 font-mono text-[10px]">class Engineer {"{"}</p>
-                  <p className="text-white font-bold text-sm pl-4 tracking-tighter">Vishal_Deshmukh</p>
-                  <p className="text-slate-500 font-mono text-[9px] pl-4">edu: "MCA CS"</p>
-                  <p className="text-indigo-400 font-mono text-[10px]">{"}"}</p>
-                </div>
-              </motion.div>
+  animate={{ 
+    y: [0, 8, 0],
+    rotateX: [0, 3, 0],
+    rotateY: [0, -3, 0]
+  }}
+  transition={{ 
+    duration: 5, 
+    repeat: Infinity, 
+    ease: "easeInOut" 
+  }}
+  className="absolute -right-2 -bottom-4 lg:-right-4 lg:-bottom-4 p-[1px] rounded-xl overflow-hidden bg-gradient-to-br from-indigo-500/40 via-transparent to-purple-500/40 shadow-xl z-30 group"
+>
+  {/* Inner Container - Ultra Compact */}
+  <div className="relative bg-slate-950/90 backdrop-blur-xl p-2.5 lg:p-3 rounded-[11px] overflow-hidden min-w-[130px] lg:min-w-[170px]">
+    
+    {/* Minimal Header */}
+    <div className="flex items-center gap-1.5 mb-2 opacity-60">
+      <div className="w-1.5 h-1.5 rounded-full bg-red-500/80" />
+      <div className="w-1.5 h-1.5 rounded-full bg-amber-500/80" />
+      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
+    </div>
+
+    {/* Stylish Code Content */}
+    <div className="space-y-0.5 font-mono relative">
+      <div className="flex items-center gap-1.5 text-[8px] lg:text-[10px]">
+        <span className="text-purple-400 italic">const</span>
+        <span className="text-blue-400">Dev</span>
+        <span className="text-white">=</span>
+        <span className="text-indigo-400">{'{'}</span>
+      </div>
+
+      <div className="pl-3 border-l border-indigo-500/20 py-0.5">
+        <p className="text-white font-bold text-[10px] lg:text-[12px] tracking-tighter group-hover:text-indigo-400 transition-colors">
+          Vishal_Deshmukh
+        </p>
+        
+        <p className="text-slate-500 text-[7px] lg:text-[9px]">
+          edu: <span className="text-emerald-400/70">"MCA_CS"</span>
+        </p>
+      </div>
+
+      <div className="text-indigo-400 text-[8px] lg:text-[10px]">{'}'}</div>
+
+      {/* Mini Status Indicator */}
+      <div className="absolute top-0 right-0 flex items-center gap-1">
+        <span className="w-1 h-1 rounded-full bg-indigo-500 animate-ping" />
+        <span className="text-[6px] text-indigo-500/70 font-bold tracking-widest uppercase">Live</span>
+      </div>
+    </div>
+  </div>
+</motion.div>
             </div>
           </motion.div>
 

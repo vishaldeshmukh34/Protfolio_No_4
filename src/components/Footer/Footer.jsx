@@ -1,45 +1,51 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   FaArrowUp, FaGithub, FaLinkedinIn, FaInstagram, 
-  FaHeart, FaCodeBranch, FaEnvelope, FaGlobeAsia, FaClock 
+  FaHeart, FaEnvelope, FaClock, FaLocationArrow, FaArrowRight
 } from "react-icons/fa";
 
-// Magnetic Social Icon Component
-const SocialLink = ({ icon, label, href }) => (
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.5 } }
+};
+
+// Optimized Social Link for Touch
+const SocialLink = ({ icon, href }) => (
   <motion.a
     href={href}
-    whileHover={{ y: -10, scale: 1.1, rotate: 5 }}
-    whileTap={{ scale: 0.9 }}
-    className="relative group flex items-center justify-center w-12 h-12 bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden"
+    variants={itemVariants}
+    whileTap={{ scale: 0.9, backgroundColor: "rgba(99, 102, 241, 0.4)" }}
+    // Hover only works on desktop (hidden on touch devices automatically by browser)
+    whileHover={{ scale: 1.1, rotate: -5 }} 
+    className="relative flex items-center justify-center w-12 h-12 bg-white/[0.05] backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-300"
   >
-    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-    <span className="text-slate-400 group-hover:text-white transition-colors text-xl relative z-10">
-      {icon}
-    </span>
-    <span className="absolute -top-12 scale-0 group-hover:scale-100 transition-all duration-300 bg-white text-black text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-tighter shadow-xl">
-      {label}
-    </span>
+    <span className="text-slate-400 group-active:text-white transition-colors text-xl">{icon}</span>
   </motion.a>
 );
 
-function Footer() {
+function AdvanceFooter() {
   const [showScroll, setShowScroll] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [time, setTime] = useState("");
 
-  // Real-time Clock for Jalna (IST)
   useEffect(() => {
     const updateTime = () => {
-      const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' };
-      setTime(new Intl.DateTimeFormat('en-IN', options).format(new Date()));
+      setTime(new Intl.DateTimeFormat('en-IN', { 
+        hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' 
+      }).format(new Date()));
     };
     updateTime();
     const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
+    
     const handleScroll = () => {
       const currentScroll = window.scrollY;
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -47,142 +53,138 @@ function Footer() {
       setShowScroll(currentScroll > 400);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => { clearInterval(timer); window.removeEventListener("scroll", handleScroll); };
   }, []);
 
   return (
-    <footer className="relative bg-[#030305] text-white pt-32 pb-10 overflow-hidden font-sans">
+    <footer className="relative bg-[#020204] text-white pt-16 pb-8 md:pt-24 md:pb-12 overflow-hidden selection:bg-indigo-500/30">
       
-      {/* 1. AMBIENT BACKGROUND FX */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[400px] bg-purple-900/5 blur-[150px] rotate-12" />
-        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      </div>
+      {/* CINEMATIC BACKGROUND */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-indigo-500/5 blur-[120px] rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 mb-24">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="max-w-7xl mx-auto px-6 relative z-10"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           
-          {/* BRAND COLUMN */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-2 text-indigo-400 font-mono text-[10px] uppercase tracking-[0.6em] mb-8">
-                <span className="h-[1px] w-8 bg-indigo-500/50" /> VISHAL DESHMUKH
+          {/* BRANDING SECTION - Responsive Text Alignment */}
+          <div className="lg:col-span-6 space-y-6 md:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start">
+            <motion.div variants={itemVariants} className="w-full">
+              <div className="flex items-center justify-center lg:justify-start gap-3 mb-4 md:mb-6">
+                <span className="h-px w-8 md:w-10 bg-indigo-500" />
+                <span className="text-[9px] md:text-[10px] font-black tracking-[0.4em] md:tracking-[0.6em] text-indigo-400 uppercase text-center">Mastery</span>
               </div>
-              <h2 className="text-7xl font-black tracking-tighter mb-8 leading-[0.85] uppercase">
-                Ready to<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 italic">Elevate?</span>
+              <h2 className="text-[clamp(2.5rem,10vw,5rem)] font-[1000] tracking-tight leading-[0.9] uppercase mb-4 md:mb-6">
+                NEXT-GEN <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 italic">CREATIVE.</span>
               </h2>
-              <p className="text-slate-400 max-w-sm text-lg font-light leading-relaxed mb-10">
-                Crafting high-performance web applications with the <span className="text-white font-medium underline decoration-indigo-500/50 underline-offset-4">MERN Stack</span> and modern UI/UX principles.
+              <p className="text-slate-400 max-w-md mx-auto lg:mx-0 text-sm md:text-lg font-light leading-relaxed">
+                Fusing code with aesthetics to build <span className="text-white border-b border-indigo-500/50">immersive</span> digital realities.
               </p>
             </motion.div>
 
-            {/* LIVE SYSTEM DATA */}
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                <FaClock className="text-indigo-400 text-xs" />
-                <span className="text-[10px] font-bold font-mono text-slate-300">{time} IST</span>
+            {/* STATUS DASHBOARD - Mobile Friendly Row */}
+            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-3 md:gap-4 items-center">
+              <div className="flex items-center gap-2 md:gap-3 px-4 py-2 bg-white/[0.02] border border-white/10 rounded-xl md:rounded-2xl">
+                <FaClock className="text-indigo-400 text-xs md:text-base animate-pulse" />
+                <span className="text-[10px] md:text-xs font-mono text-slate-300 font-bold uppercase tracking-wider">{time}</span>
               </div>
-              <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] font-bold font-mono text-slate-300 uppercase tracking-widest">Available</span>
+              <div className="flex items-center gap-2 md:gap-3 px-4 py-2 bg-emerald-500/5 border border-emerald-500/20 rounded-xl md:rounded-2xl">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span className="text-[9px] md:text-[10px] font-black text-emerald-400 uppercase tracking-widest">Active_Node</span>
               </div>
-            </div>
+            </motion.div>
           </div>
 
-          {/* LINKS GRID */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
-            <div>
-              <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-indigo-500 mb-8">Navigation</h4>
-              <ul className="space-y-5">
-                {["About", "Work", "Services", "Stack"].map((item) => (
-                  <li key={item}>
-                    <a href={`#${item.toLowerCase()}`} className="text-slate-400 hover:text-white transition-all text-sm font-semibold flex items-center group">
-                      <span className="h-[1px] w-0 bg-indigo-500 group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-3" />
-                      {item}
-                    </a>
-                  </li>
+          {/* ACTION GRID - Adaptive Layout */}
+          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-4 w-full">
+            
+            <div className="space-y-4 md:space-y-6 text-center sm:text-left">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Quick_Nav</h4>
+              <nav className="grid grid-cols-2 gap-4">
+                {["Work", "Stack", "Design", "About"].map(item => (
+                  <motion.a 
+                    key={item} 
+                    whileTap={{ x: 5, color: "#818cf8" }}
+                    href={`#${item.toLowerCase()}`} 
+                    className="text-xs md:text-sm font-bold text-slate-400 uppercase tracking-widest p-2 border border-white/5 rounded-lg sm:border-none"
+                  >
+                    {item}
+                  </motion.a>
                 ))}
-              </ul>
+              </nav>
             </div>
 
-            <div>
-              <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-indigo-500 mb-8">Connect</h4>
-              <div className="grid grid-cols-2 gap-3">
-                <SocialLink icon={<FaGithub />} label="Git" href="#" />
-                <SocialLink icon={<FaLinkedinIn />} label="In" href="#" />
-                <SocialLink icon={<FaInstagram />} label="Ig" href="#" />
-                <SocialLink icon={<FaEnvelope />} label="Mail" href="#" />
+            <div className="space-y-6 text-center sm:text-left flex flex-col items-center sm:items-start">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Connect</h4>
+              <div className="flex gap-2 md:gap-3">
+                <SocialLink icon={<FaGithub />} href="https://github.com/vishaldeshmukh34" />
+                <SocialLink icon={<FaLinkedinIn />} href="https://www.linkedin.com/in/vishal-deshmukh79/" />
+                <SocialLink icon={<FaInstagram />} href="#" />
+              <SocialLink icon={<FaEnvelope />} href="mailto:vishaldeshmukh7972@gmail.com" isEmail={true} />
               </div>
-            </div>
-
-            <div className="col-span-2 md:col-span-1">
-              <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-indigo-500 mb-8">Office</h4>
-              <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                Based in Jalna, MH<br />
-                Maharashtra, India
-              </p>
+              
               <motion.a 
                 href="mailto:vishaldeshmukh7972@gmail.com"
-                whileHover={{ scale: 1.02 }}
-                className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] py-3 px-6 bg-white text-black rounded-lg hover:bg-indigo-500 hover:text-white transition-colors shadow-2xl shadow-indigo-500/20"
+                whileTap={{ scale: 0.95 }}
+                className="w-full flex items-center justify-between p-4 bg-indigo-600 rounded-2xl shadow-xl shadow-indigo-500/20"
               >
-                Let's Talk <FaArrowUp className="rotate-45" />
+                <span className="text-[11px] font-black uppercase tracking-widest">Inquire Project</span>
+                <FaArrowRight />
               </motion.a>
             </div>
           </div>
         </div>
 
-        {/* 3. FOOTER BOTTOM */}
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex flex-col gap-1">
-            <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.4em]">
-              © {new Date().getFullYear()} VISHAL DESHMUKH
-            </span>
-            <span className="text-slate-600 text-[8px] font-mono uppercase tracking-widest">
-              Built with Passion // Designed for Impact
-            </span>
-          </div>
+        {/* REFINED BOTTOM BAR - Mobile Stacked */}
+        <div className="mt-16 md:mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6">
+          <motion.div variants={itemVariants} className="text-center md:text-left order-2 md:order-1">
+            <p className="text-[10px] font-black text-slate-500 tracking-[0.5em] uppercase">© 2026 VISHAL DESHMUKH</p>
+            <p className="text-[8px] font-mono text-slate-800 uppercase mt-2">v4.1.0 // Node_Jalna_IN</p>
+          </motion.div>
 
-          <div className="flex items-center gap-8 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
-            <div className="flex items-center gap-2 group cursor-none">
-              Build with <FaHeart className="text-rose-500 group-hover:scale-125 transition-transform" /> in India
+          <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center gap-4 md:gap-8 order-1 md:order-2">
+            <div className="flex items-center gap-2 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+               Handcrafted with <FaHeart className="text-indigo-500 text-xs animate-bounce" /> in India
             </div>
-            <div className="hidden sm:block h-4 w-[1px] bg-white/10" />
-            <div className="hidden sm:block font-mono text-slate-700">V2.4.0_PROD</div>
-          </div>
+            <div className="hidden md:block h-4 w-px bg-white/10" />
+            <div className="text-[10px] font-mono text-slate-400 bg-white/[0.03] px-3 py-1 rounded-full border border-white/5">
+              19.8415° N <span className="text-slate-700 mx-1">|</span> 75.8833° E
+            </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* 4. RE-IMAGINED FLOATING SCROLL PROGRESS */}
+      {/* COMPACT SCROLL PROGRESS - Visible on scroll */}
       <AnimatePresence>
         {showScroll && (
           <motion.div 
-            initial={{ opacity: 0, scale: 0.8, x: 100 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            exit={{ opacity: 0, scale: 0.8, x: 100 }}
-            className="fixed bottom-10 right-10 z-[100]"
+            initial={{ opacity: 0, y: 50 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 right-6 z-[100]"
           >
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="relative w-14 h-24 bg-white/5 backdrop-blur-2xl rounded-full border border-white/10 flex flex-col items-center justify-between py-4 group hover:border-indigo-500/50 transition-colors"
+              className="relative w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-2xl active:scale-90 transition-transform"
             >
-              <div className="relative w-1 h-12 bg-white/10 rounded-full overflow-hidden">
-                <motion.div 
-                  className="absolute top-0 left-0 w-full bg-gradient-to-b from-indigo-500 to-purple-500"
-                  style={{ height: `${scrollProgress}%` }}
+              <svg className="absolute inset-0 w-full h-full -rotate-90">
+                <circle cx="24" cy="24" r="21" fill="transparent" stroke="rgba(0,0,0,0.05)" strokeWidth="3" />
+                <motion.circle
+                  cx="24" cy="24" r="21" fill="transparent" stroke="#6366f1" strokeWidth="3"
+                  strokeDasharray="132"
+                  strokeDashoffset={132 - (132 * scrollProgress) / 100}
                 />
-              </div>
-              <FaArrowUp className="text-white group-hover:-translate-y-1 transition-transform" />
-              <span className="absolute -left-14 top-1/2 -translate-y-1/2 text-[10px] font-mono text-indigo-400 rotate-90 tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                BACK TO TOP
-              </span>
+              </svg>
+              <FaArrowUp className="text-sm" />
             </button>
           </motion.div>
         )}
@@ -191,4 +193,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default AdvanceFooter;

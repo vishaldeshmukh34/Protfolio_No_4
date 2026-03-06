@@ -1,184 +1,215 @@
-import React from "react";
-import { motion, useSpring, useTransform, useMotionValue } from "framer-motion";
-import { FaExternalLinkAlt, FaBolt, FaMicrochip, FaTerminal, FaDatabase, FaCode } from "react-icons/fa";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaTerminal, FaCode, FaExternalLinkAlt, FaGithub, FaBolt, FaMicrochip, FaRocket, FaEye, FaHotel } from "react-icons/fa";
 
 const projects = [
-  { 
-    id: 1, 
-    img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000", 
-    title: "Crop Pilot AI", 
-    category: "Machine Learning", 
-    size: "large", 
-    stats: { perf: "98%", loc: "12k+", build: "Success" }, 
-    tech: ["React", "Flask", "PyTorch"],
-    github: "#" 
+  {
+    id: 1,
+    title: "Portfolio 0.1",
+    category: "Development",
+    colSpan: "lg:col-span-4 md:col-span-6",
+    desc: "The initial blueprint. A clean, HTML/CSS focused foundation exploring core layout principles.",
+    tags: ["HTML", "CSS", "JS"],
+    img: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=2069",
+    link: "#",
+    github: "https://github.com/vishaldeshmukh34/My-Porfolio.1",
+    metric: "Legacy v0.1"
   },
-  { 
-    id: 2, 
-    img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc48?auto=format&fit=crop&q=80&w=1000", 
-    title: "V-Auth Logic", 
-    category: "Cybersecurity", 
-    size: "small", 
-    stats: { perf: "99%", loc: "4k+", build: "Stable" }, 
-    tech: ["Node.js", "Redis"],
-    github: "#"
+  {
+    id: 2,
+    title: "Portfolio 0.2",
+    category: "Development",
+    colSpan: "lg:col-span-4 md:col-span-6",
+    desc: "Evolution into React. Implementing component-based architecture and basic state management.",
+    tags: ["React", "Tailwind"],
+    img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=2055",
+    link: "#",
+    github: "https://github.com/vishaldeshmukh34/My-Porfolio.2",
+    metric: "Stable v0.2"
   },
-  { 
-    id: 3, 
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000", 
-    title: "Finance Data", 
-    category: "Data Viz", 
-    size: "small", 
-    stats: { perf: "95%", loc: "2k+", build: "V2.1" }, 
-    tech: ["D3.js", "Tailwind"],
-    github: "#"
+  {
+    id: 3,
+    title: "Portfolio 0.3",
+    category: "Development",
+    colSpan: "lg:col-span-4 md:col-span-12",
+    desc: "The Framer Motion era. High-fidelity animations and advanced UI/UX patterns.",
+    tags: ["Framer", "Next.js"],
+    img: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1964",
+    link: "#",
+    github: "https://github.com/vishaldeshmukh34/My-Profolio.3",
+    metric: "Current v0.3"
   },
-  { 
-    id: 4, 
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000", 
-    title: "EduLearn OS", 
-    category: "FullStack", 
-    size: "medium", 
-    stats: { perf: "97%", loc: "8k+", build: "Live" }, 
-    tech: ["Java", "Spring", "AWS"],
-    github: "#"
+  {
+    id: 4,
+    title: "Luxury Hotel",
+    category: "UI / UX",
+    colSpan: "lg:col-span-7 md:col-span-12",
+    desc: "A premium hospitality interface featuring elegant parallax sections and a booking engine prototype.",
+    tags: ["React", "Motion", "Luxury"],
+    img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070",
+    link: "https://vishaldeshmukh34.github.io/luxury-hotel/",
+    github: "https://github.com/vishaldeshmukh34/luxury-hotel",
+    metric: "Premium Design"
   },
-  { 
-    id: 5, 
-    img: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000", 
-    title: "Neural Analytics", 
-    category: "AI Architecture", 
-    size: "medium", 
-    stats: { perf: "92%", loc: "15k+", build: "Beta" }, 
-    tech: ["Python", "TensorFlow"],
-    github: "#"
-  },
+  {
+    id: 5,
+    title: "Landing Page",
+    category: "Marketing",
+    colSpan: "lg:col-span-5 md:col-span-12",
+    desc: "High-conversion landing page optimized for performance and visual storytelling.",
+    tags: ["MERN", "GSAP"],
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015",
+    link: "https://vishaldeshmukh34.github.io/Landing-page/",
+    github: "https://github.com/vishaldeshmukh34/Landing-page",
+    metric: "Conversion+"
+  }
 ];
 
-const ProjectCard = ({ project }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(useSpring(y, { stiffness: 100, damping: 30 }), [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(useSpring(x, { stiffness: 100, damping: 30 }), [-0.5, 0.5], ["-8deg", "8deg"]);
+const Works = () => {
+  const [filter, setFilter] = useState("All");
+  const categories = ["All", "Development", "UI / UX", "Marketing"];
+
+  return (
+    <section id="works" className="py-20 md:py-40 bg-[#020205] relative overflow-hidden font-sans">
+      {/* AMBIENT BACKGROUND */}
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+      
+      <div className="container mx-auto px-4 md:px-10 relative z-10">
+        <header className="flex flex-col gap-8 mb-16 md:mb-24">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-3"
+          >
+            <div className="w-2 h-2 bg-indigo-500 rounded-full animate-ping" />
+            <span className="text-indigo-400 font-mono text-[10px] md:text-xs uppercase tracking-[0.4em]">Project_Vault_2026</span>
+          </motion.div>
+
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase leading-[0.8] italic">
+              CRAFTED <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-400 to-cyan-400 not-italic">WORKS.</span>
+            </h2>
+
+            {/* NEOMORPHIC FILTER */}
+            <div className="flex overflow-x-auto pb-2 md:pb-0 gap-2 no-scrollbar scroll-smooth">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`whitespace-nowrap px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border ${
+                    filter === cat ? "bg-indigo-600 border-indigo-400 text-white shadow-[0_0_20px_rgba(79,70,229,0.4)]" : "bg-white/5 border-white/10 text-zinc-500 hover:text-white hover:border-white/20"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </header>
+
+        {/* BENTO GRID */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
+          <AnimatePresence mode="popLayout">
+            {projects.filter(p => filter === "All" || p.category === filter).map((p, idx) => (
+              <ProjectCard key={p.id} project={p} index={idx} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const ProjectCard = ({ project, index }) => {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
 
   return (
     <motion.div
       layout
-      onMouseMove={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - rect.left) / rect.width - 0.5);
-        y.set((e.clientY - rect.top) / rect.height - 0.5);
-      }}
-      onMouseLeave={() => { x.set(0); y.set(0); }}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`relative rounded-[2rem] md:rounded-[3rem] overflow-hidden group bg-slate-900 border border-white/5 shadow-2xl transition-all duration-500 hover:border-indigo-500/50
-        ${project.size === "large" ? "lg:col-span-8 lg:row-span-2" : "lg:col-span-4 lg:row-span-1"}
-        ${project.size === "medium" ? "lg:row-span-2" : ""}`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      onMouseMove={handleMouseMove}
+      className={`group relative rounded-[2rem] bg-[#0a0a0f] border border-white/10 overflow-hidden ${project.colSpan} h-[450px] md:h-[550px] transition-all duration-700 hover:border-indigo-500/40`}
     >
-      <div className="absolute inset-0 bg-slate-800 animate-pulse" />
-
-      <motion.img 
-        src={project.img} 
-        alt={project.title} 
-        className="w-full h-full object-cover opacity-40 lg:opacity-30 lg:group-hover:opacity-60 transition-all duration-1000 scale-105 lg:scale-110 lg:group-hover:scale-100 relative z-0" 
+      {/* INTERACTIVE RADIAL GLOW */}
+      <div 
+        className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block"
+        style={{ background: `radial-gradient(500px circle at ${mousePos.x}px ${mousePos.y}px, rgba(99,102,241,0.08), transparent 40%)` }}
       />
-      
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
-      
-      {/* --- MOBILE FRIENDLY HUD --- */}
-      <div style={{ transform: "translateZ(60px)" }} className="absolute inset-0 p-6 md:p-10 flex flex-col justify-between pointer-events-none z-10">
-        
-        {/* Top Section: Always visible on mobile, hover on desktop */}
-        <div className="flex justify-between items-start opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-500 lg:translate-y-4 lg:group-hover:translate-y-0">
-          <div className="flex gap-2 md:gap-3">
-            <div className="bg-black/60 backdrop-blur-xl border border-white/10 p-2 md:p-3 rounded-xl md:rounded-2xl shadow-2xl">
-              <p className="text-[6px] md:text-[7px] text-indigo-400 font-black uppercase mb-1 flex items-center gap-1"><FaBolt /> PERF</p>
-              <p className="text-white text-[9px] md:text-[10px] font-mono">{project.stats.perf}</p>
-            </div>
-            <div className="bg-black/60 backdrop-blur-xl border border-white/10 p-2 md:p-3 rounded-xl md:rounded-2xl shadow-2xl">
-              <p className="text-[6px] md:text-[7px] text-cyan-400 font-black uppercase mb-1 flex items-center gap-1"><FaDatabase /> CODE</p>
-              <p className="text-white text-[9px] md:text-[10px] font-mono">{project.stats.loc}</p>
-            </div>
+
+      {/* PROJECT MEDIA */}
+      <div className="absolute inset-0 z-0">
+        <img src={project.img} className="w-full h-full object-cover opacity-30 grayscale group-hover:opacity-50 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-in-out" alt={project.title} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020205] via-[#020205]/70 to-transparent" />
+      </div>
+
+      {/* HUD ELEMENTS */}
+      <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-30">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xl">
+            {project.category === "UI / UX" ? <FaHotel className="text-indigo-400 text-[10px]" /> : <FaBolt className="text-indigo-400 text-[10px]" />}
+            <span className="text-white font-mono text-[9px] uppercase tracking-widest">{project.category}</span>
           </div>
-          
-          <div className="flex gap-2 pointer-events-auto">
-             <a href={project.github} className="w-8 h-8 md:w-10 md:h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
-                <FaCode size={12} />
-             </a>
-             <a href="#" className="w-8 h-8 md:w-10 md:h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-[0_0_20px_rgba(79,70,229,0.5)] hover:scale-110 transition-transform">
-                <FaExternalLinkAlt size={10} />
-             </a>
-          </div>
+          <span className="text-zinc-600 font-mono text-[8px] tracking-[0.3em] uppercase ml-1">{project.metric}</span>
         </div>
 
-        {/* Bottom Section */}
-        <div className="relative">
-          <motion.div 
-            initial={{ width: 0 }} 
-            whileInView={{ width: "60px" }} 
-            className="h-1 bg-indigo-500 mb-4 rounded-full" 
-          />
-          <p className="text-indigo-400 font-mono text-[8px] md:text-[9px] tracking-[0.5em] uppercase mb-1 md:mb-2">{project.category}</p>
-          <h3 className="text-white text-2xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[0.9] mb-4 md:mb-6 uppercase italic drop-shadow-2xl">
+        {/* COMPACT ACTIONS (Universal) */}
+        <div className="flex gap-2">
+          <a href={project.github} className="w-9 h-9 md:w-11 md:h-11 bg-white/5 hover:bg-white/10 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/10 text-white transition-all active:scale-90">
+            <FaGithub size={18}/>
+          </a>
+          <a href={project.link} className="w-9 h-9 md:w-11 md:h-11 bg-indigo-600 hover:bg-indigo-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 transition-all active:scale-90">
+            <FaExternalLinkAlt size={14}/>
+          </a>
+        </div>
+      </div>
+
+      {/* CONTENT BLOCK */}
+      <div className="absolute bottom-0 left-0 w-full p-8 md:p-10 z-20">
+        <div className="space-y-4">
+          <h3 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none transition-transform duration-500 group-hover:translate-x-2">
             {project.title}
           </h3>
           
-          {/* Tech tags: Always visible on mobile */}
-          <div className="flex flex-wrap gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all delay-300">
-             {project.tech.map(t => (
-               <span key={t} className="text-[7px] md:text-[8px] font-bold text-slate-300 bg-white/5 border border-white/10 px-3 md:px-4 py-1 rounded-full uppercase tracking-widest backdrop-blur-md">
-                 {t}
-               </span>
-             ))}
+          <p className="text-zinc-400 text-sm md:text-base max-w-lg line-clamp-2 md:line-clamp-none group-hover:text-zinc-200 transition-colors">
+            {project.desc}
+          </p>
+
+          <div className="flex flex-wrap gap-2 pt-2">
+            {project.tags.map(tag => (
+              <span key={tag} className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-md border border-white/5 text-[9px] font-bold text-zinc-500 uppercase tracking-widest group-hover:text-indigo-300 transition-colors">
+                <div className="w-1 h-1 bg-indigo-500/50 rounded-full" /> {tag}
+              </span>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent shadow-[0_0_15px_#6366f1] opacity-0 group-hover:opacity-100 group-hover:animate-scan pointer-events-none z-20" />
-    </motion.div>
-  );
-};
-
-const Works = () => {
-  return (
-    <section id="works" className="py-20 md:py-48 bg-[#020617] relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_60%,transparent_100%)] opacity-20 pointer-events-none" />
-
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 md:mb-40 gap-8 md:gap-10">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 text-indigo-500 font-mono text-[10px] mb-4 md:mb-8 uppercase tracking-[0.4em] md:tracking-[0.6em]">
-              <FaTerminal className="animate-pulse" /> Protocol: Assets_Manifest
-            </div>
-            <h2 className="text-[clamp(2.5rem,8vw,8rem)] font-black text-white tracking-tighter leading-[0.85] uppercase">
-              Core <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 italic">Deployments.</span>
-            </h2>
-          </div>
-          <div className="max-w-xs md:pb-4">
-            <p className="text-slate-500 text-xs md:text-sm font-medium border-l-2 border-indigo-600 pl-6 md:pl-8 leading-relaxed">
-              Proprietary architectural patterns and scalable machine learning pipelines engineered for high availability.
-            </p>
-          </div>
-        </div>
-
-        {/* BENTO GRID SYSTEM */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-12 auto-rows-[320px] md:auto-rows-[450px]">
-          {projects.map(p => <ProjectCard key={p.id} project={p} />)}
-        </div>
+      {/* SCANNER LINE */}
+      <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity">
+        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-400 to-transparent absolute top-0 animate-scan" />
       </div>
 
       <style jsx="true">{`
         @keyframes scan {
-          0% { transform: translateY(-100px); opacity: 0; }
-          20% { opacity: 1; }
-          80% { opacity: 1; }
-          100% { transform: translateY(600px); opacity: 0; }
+          0% { top: -5%; }
+          100% { top: 105%; }
         }
         .animate-scan {
-          animation: scan 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          animation: scan 4s linear infinite;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
-    </section>
+    </motion.div>
   );
 };
 

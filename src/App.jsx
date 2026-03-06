@@ -64,7 +64,7 @@ function App() {
       <section id="contact">
         <Contact />
       </section>
-
+     
       {/* Footer */}
       <Footer />
 
