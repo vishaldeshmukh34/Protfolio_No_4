@@ -82,7 +82,7 @@ function Contact() {
             </motion.div>
 
             <div className="relative group cursor-default px-2">
-              <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-[1000] leading-[0.85] tracking-[-0.06em] text-slate-900/5 absolute top-0 left-0 w-full select-none text-center">
+              <h2 className="text-2xl sm:text-7xl md:text-8xl lg:text-[10rem] font-[1000] leading-[0.85] tracking-[-0.06em] text-slate-900/5 absolute top-0 left-0 w-full select-none text-center">
                 START A <br /> CONVERSATION
               </h2>
               
