@@ -148,6 +148,8 @@ const Blog = () => {
             </h2>
           </div>
 
+          
+
           {/* RESPONSIVE CATEGORY TABS (Scrollable on Mobile) */}
           <div className="flex overflow-x-auto pb-4 pt-4 md:pt-8 gap-3 no-scrollbar scroll-smooth">
             {categories.map((cat) => (

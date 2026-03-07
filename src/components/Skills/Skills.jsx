@@ -29,7 +29,7 @@ const SkillCard = ({ skill }) => {
       style={{ rotateX, rotateY, perspective: 1000 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => { x.set(0); y.set(0); }}
-      whileHover={{ y: -5, scale: 1.02 }} // Reduced hover jump
+      whileHover={{ y: -5, scale: 1.02 }}
       className="relative flex flex-col items-center justify-center py-6 px-2 rounded-[1.5rem] bg-white/30 backdrop-blur-md border border-white/40 hover:border-sky-300 transition-colors duration-500 shadow-[0_4px_20px_0_rgba(14,165,233,0.08)] group/skill overflow-hidden"
     >
       <div className="absolute top-2 right-3 text-[7px] font-black text-slate-300 group-hover/skill:text-sky-500 transition-colors">
@@ -62,7 +62,7 @@ function Skills() {
       title: "Frontend",
       description: "Next-Gen Interfaces",
       accent: "from-sky-300/40 via-blue-400/20 to-transparent",
-      icon: <FaReact size={22} />, // Sized down icon
+      icon: <FaReact size={22} />,
       items: [
         { name: "React.js", icon: <FaReact />, color: "text-sky-500", level: "92%" },
         { name: "Next.js", icon: <SiNextdotjs />, color: "text-slate-800", level: "85%" },
@@ -117,31 +117,75 @@ function Skills() {
   ];
 
   return (
-    <section id="skills" className="py-16 md:py-24 px-4 bg-slate-50 relative overflow-hidden">
-      {/* 1. LAYERED BG EFFECTS */}
+    <section id="skills" className="py-24 px-4 bg-slate-50 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(240,249,255,1)_0%,rgba(255,255,255,1)_100%)]" />
       
       <div className="max-w-6xl mx-auto relative z-10">
         
-        {/* HEADER AREA - More compact sizing */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-2"
-          >
-            <span className="text-slate-900">THE</span> 
-            <span className="block text-transparent bg-clip-text bg-gradient-to-b from-sky-400 to-blue-700 drop-shadow-lg">ARSENAL.</span>
-          </motion.h2>
-          
-          <div className="h-[1px] w-16 bg-sky-500 mb-4 mt-2" />
-          
-          <p className="text-slate-400 font-bold uppercase tracking-[0.4em] text-[8px] md:text-xs">
-            Crafting Digital Excellence
-          </p>
-        </div>
+        {/* BRUTALIST HEADER SECTION - ULTRA STYLISH VERSION */}
+<div className="relative group cursor-default mb-20 md:mb-32 flex flex-col items-center text-center py-10">
+    
+    {/* 1. ANIMATED BACKGROUND TEXT (Floating & Pulsing) */}
+    <motion.h2 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        animate={{ 
+            y: [0, -10, 0],
+            scale: [1, 1.02, 1] 
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="text-7xl sm:text-9xl md:text-[11rem] lg:text-[14rem] font-[1000] leading-none tracking-[-0.08em] text-slate-900/[0.03] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full select-none uppercase whitespace-nowrap blur-[2px]"
+    >
+        THE ARSENAL
+    </motion.h2>
+    
+    {/* 2. MAIN CONTENT WRAPPER */}
+    <div className="relative group/title">
+        
+        {/* Main Animated Text */}
+        <h2 className="text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] font-[1000] leading-none tracking-[-0.06em] text-slate-900 relative uppercase flex flex-wrap justify-center items-center gap-x-6">
+            
+            {/* "THE" with a Slide-up Reveal */}
+            <div className="overflow-hidden">
+                <motion.span 
+                  initial={{ y: "100%" }}
+                  whileInView={{ y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-block"
+                >
+                  THE
+                </motion.span>
+            </div>
 
-        {/* BENTO GRID - Optimized gap and padding */}
+            {/* "ARSENAL" with Outlined Gradient & Glow */}
+            <span className="inline-block text-transparent py-1 md:py-2 transition-all duration-700 group-hover/title:tracking-normal" 
+                  style={{ WebkitTextStroke: "1.5px rgba(15, 23, 42, 0.4)" }}>
+              ARSENAL
+              <motion.span 
+                animate={{ opacity: [1, 0.4, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-indigo-600 drop-shadow-[0_0_15px_rgba(79,70,229,0.6)]"
+              >
+                .
+              </motion.span>
+            </span>
+        </h2>
+
+        {/* 3. REFINE TAGLINE WITH GLASSMORTHISM ACCENT */}
+        <div className="flex items-center justify-center gap-4 mt-6">
+            <div className="h-[1px] w-8 md:w-12 bg-slate-200" />
+            <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[8px] md:text-xs relative z-10">
+              Crafting <span className="text-slate-900">Digital</span> Excellence
+            </p>
+            <div className="h-[1px] w-8 md:w-12 bg-slate-200" />
+        </div>
+    </div>
+
+    {/* 4. MOUSE GLOW EFFECT (Subtle background radial light) */}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-sky-200/20 blur-[100px] -z-10 group-hover:bg-indigo-200/30 transition-colors duration-700" />
+</div>
+
+        {/* BENTO GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {categories.map((cat, idx) => (
             <motion.div
@@ -166,7 +210,6 @@ function Skills() {
                   </div>
                 </div>
 
-                {/* SKILL TILES GRID */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {cat.items.map((skill, i) => (
                     <SkillCard key={i} skill={skill} />
