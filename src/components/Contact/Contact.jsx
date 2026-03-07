@@ -5,7 +5,7 @@ import {
   FaMapMarkerAlt, FaTerminal, FaCheckCircle, FaCode, FaSatellite
 } from "react-icons/fa";
 
-// --- NEW: Cinematic Noise Component ---
+// --- Cinematic Noise Component ---
 const GrainOverlay = () => (
   <div className="fixed inset-0 z-[99] pointer-events-none opacity-[0.035] mix-blend-overlay">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -17,6 +17,7 @@ const GrainOverlay = () => (
   </div>
 );
 
+// --- Individual Contact Info Card ---
 const ContactInfo = ({ icon: Icon, label, value, color, delay }) => (
   <motion.div 
     initial={{ opacity: 0, x: -30 }}
@@ -37,33 +38,36 @@ const ContactInfo = ({ icon: Icon, label, value, color, delay }) => (
 
 function Contact() {
   const [isSent, setIsSent] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Magnetic Logic
+  // Magnetic Button/Grid Logic
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const dx = useSpring(mouseX, { stiffness: 150, damping: 15 });
-  const dy = useSpring(mouseY, { stiffness: 150, damping: 15 });
+  const dx = useSpring(mouseX, { stiffness: 200, damping: 20 });
+  const dy = useSpring(mouseY, { stiffness: 200, damping: 20 });
 
   const handleMouseMove = (e) => {
-    if (window.innerWidth < 1024) return;
     const { clientX, clientY, currentTarget } = e;
     const { left, top, width, height } = currentTarget.getBoundingClientRect();
+    
     mouseX.set(clientX - (left + width / 2));
     mouseY.set(clientY - (top + height / 2));
+    setMousePos({ x: clientX - left, y: clientY - top });
   };
 
   const handleSend = (e) => {
     e.preventDefault();
     setIsSent(true);
+    // Success state lasts 8 seconds then resets
     setTimeout(() => setIsSent(false), 8000);
   };
 
   return (
-    <div className="relative bg-[#fcfcff] selection:bg-indigo-600 selection:text-white overflow-x-hidden">
+    <div className="relative bg-[#fcfcff] selection:bg-indigo-600 selection:text-white overflow-x-hidden font-sans">
       <GrainOverlay />
       
       <section id="contact" className="relative py-20 lg:py-40 px-4">
-        {/* AMBIENT BACKGROUND */}
+        {/* AMBIENT BACKGROUND BLURS */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-0 left-[-10%] w-[600px] h-[600px] bg-indigo-100/40 rounded-full blur-[140px]" />
           <div className="absolute bottom-0 right-[-10%] w-[500px] h-[500px] bg-purple-100/40 rounded-full blur-[140px]" />
@@ -74,19 +78,19 @@ function Contact() {
           {/* HEADER SECTION */}
           <div className="flex flex-col items-center text-center mb-20 md:mb-32 space-y-6">
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
               className="flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-md border border-white rounded-full text-indigo-600 font-mono text-[9px] md:text-[10px] uppercase tracking-[0.5em] shadow-sm"
             >
               <FaSatellite className="animate-pulse" /> Uplink_Channel.v5
             </motion.div>
 
             <div className="relative group cursor-default px-2">
-              <h2 className="text-2xl sm:text-7xl md:text-8xl lg:text-[10rem] font-[1000] leading-[0.85] tracking-[-0.06em] text-slate-900/5 absolute top-0 left-0 w-full select-none text-center">
+              <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[10rem] font-[1000] leading-[0.85] tracking-[-0.06em] text-slate-900/5 absolute top-0 left-0 w-full select-none text-center">
                 START A <br /> CONVERSATION
               </h2>
               
-              <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-[1000] leading-[0.85] tracking-[-0.06em] text-slate-950 relative">
+              <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[10rem] font-[1000] leading-[0.85] tracking-[-0.06em] text-slate-950 relative">
                 <motion.span 
                   initial={{ clipPath: "inset(0 100% 0 0)" }}
                   whileInView={{ clipPath: "inset(0 0% 0 0)" }}
@@ -103,22 +107,98 @@ function Contact() {
           </div>
 
           <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-            {/* LEFT SIDE: INFO */}
-            <div className="lg:col-span-5 space-y-6">
-              <ContactInfo icon={FaEnvelope} label="Direct_Uplink" value="vishaldeshmukh7972@gmail.com" color="bg-indigo-600" delay={0.1} />
-              <ContactInfo icon={FaMapMarkerAlt} label="Base_Station" value="Jalna, MH, India" color="bg-slate-950" delay={0.2} />
+            {/* LEFT SIDE: CONTACT CARDS & INTERACTIVE CTA */}
+            <div className="lg:col-span-5 space-y-4 px-2 md:px-0">
+              <ContactInfo 
+                icon={FaEnvelope} 
+                label="DIRECT_UPLINK" 
+                value="vishaldeshmukh7972@gmail.com" 
+                color="bg-indigo-600" 
+                delay={0.1} 
+              />
+              <ContactInfo 
+                icon={FaMapMarkerAlt} 
+                label="BASE_STATION" 
+                value="Jalna, MH, India" 
+                color="bg-slate-900" 
+                delay={0.2} 
+              />
               
-              <div className="p-8 md:p-12 bg-slate-950 rounded-[3rem] text-white relative overflow-hidden group min-h-[350px] flex flex-col justify-between shadow-3xl">
-                <FaCode className="absolute -bottom-16 -right-16 text-[18rem] text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-1000 ease-out" />
-                <h3 className="text-4xl sm:text-5xl font-black relative z-10 leading-none tracking-tighter">Let's build <br/> the next <br/> <span className="text-indigo-500 italic">big thing.</span></h3>
-                <div className="flex gap-4 relative z-10">
-                  <motion.a href="https://github.com/vishaldeshmukh34" whileHover={{ y: -8, scale: 1.1 }} className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 hover:bg-white hover:text-black transition-all text-xl shadow-lg"><FaGithub /></motion.a>
-                  <motion.a href="https://www.linkedin.com/in/vishal-deshmukh79/" whileHover={{ y: -8, scale: 1.1 }} className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 hover:bg-indigo-500 transition-all text-xl shadow-lg shadow-indigo-500/20"><FaLinkedin /></motion.a>
+              <div 
+                onMouseMove={handleMouseMove}
+                className="p-6 md:p-10 bg-[#030305] rounded-[2rem] md:rounded-[3rem] text-white relative overflow-hidden group min-h-[400px] flex flex-col justify-between border border-white/[0.03] shadow-2xl transition-all duration-500 hover:border-indigo-500/20"
+              >
+                {/* Magnetic Dot Grid */}
+                <motion.div 
+                  className="absolute inset-0 z-0 opacity-15 group-hover:opacity-30 transition-opacity duration-1000"
+                  style={{ 
+                    backgroundImage: `radial-gradient(circle at 1px 1px, #6366f1 1px, transparent 0)`, 
+                    backgroundSize: '24px 24px',
+                    x: (mousePos.x - 300) / 30,
+                    y: (mousePos.y - 200) / 30,
+                  }}
+                />
+
+                <div 
+                  className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(99,102,241,0.12), transparent 40%)`
+                  }}
+                />
+                
+                <FaCode className="absolute -bottom-10 -right-10 text-[12rem] md:text-[18rem] text-indigo-500/[0.02] -rotate-6 group-hover:rotate-0 transition-all duration-1000 z-0" />
+
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-[1px] w-8 bg-indigo-500/50" />
+                    <span className="text-[9px] font-mono tracking-[0.5em] text-indigo-400/70 uppercase">Init_Handshake</span>
+                  </div>
+
+                  <h3 className="flex flex-col text-[clamp(2rem,5vw,3.5rem)] font-black leading-[0.9] tracking-[-0.07em] uppercase">
+                    <motion.span 
+                      initial={{ x: -10, opacity: 0 }}
+                      whileInView={{ x: 0, opacity: 1 }}
+                      className="italic text-white/90"
+                    >
+                      Let's build
+                    </motion.span> 
+                    <span className="text-white/20 text-[0.6em] tracking-[0.1em] font-light my-1 group-hover:text-white/40 transition-colors uppercase">
+                      // THE NEXT
+                    </span> 
+                    <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-400 to-indigo-600 font-[1000] not-italic">
+                      BIG THING
+                      <motion.span 
+                        animate={{ left: ['-100%', '200%'] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute top-0 bottom-0 w-1/2 bg-white/10 blur-xl -skew-x-12 pointer-events-none"
+                      />
+                    </span>
+                  </h3>
                 </div>
+
+                <div className="relative z-10 flex items-end justify-between gap-4">
+                  <div className="flex gap-3">
+                    <motion.a href="https://github.com/vishaldeshmukh34" target="_blank" rel="noopener noreferrer" whileHover={{ y: -5, scale: 1.05 }} className="w-12 h-12 bg-white/[0.03] rounded-2xl flex items-center justify-center border border-white/10 hover:border-white/30 transition-all text-lg group/icon">
+                      <FaGithub className="group-hover/icon:text-white transition-colors" />
+                    </motion.a>
+                    <motion.a href="https://www.linkedin.com/in/vishal-deshmukh79/" target="_blank" rel="noopener noreferrer" whileHover={{ y: -5, scale: 1.05 }} className="w-12 h-12 bg-white/[0.03] rounded-2xl flex items-center justify-center border border-white/10 hover:border-indigo-500/50 transition-all text-lg group/icon">
+                      <FaLinkedin className="group-hover/icon:text-indigo-400 transition-colors" />
+                    </motion.a>
+                  </div>
+
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.02] rounded-full border border-white/[0.05]">
+                      <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-1 bg-indigo-500 rounded-full" />
+                      <span className="text-[8px] font-mono text-zinc-500 uppercase tracking-widest">Uplink_Encrypted</span>
+                    </div>
+                    <span className="text-[7px] font-mono text-zinc-700 tracking-[0.2em] mr-2 uppercase">VISHAL_PRO_V5.1.4</span>
+                  </div>
+                </div>
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
               </div>
             </div>
 
-            {/* RIGHT SIDE: TERMINAL FORM */}
+            {/* RIGHT SIDE: TERMINAL-STYLE FORM */}
             <div className="lg:col-span-7 relative">
               <AnimatePresence mode="wait">
                 {!isSent ? (
@@ -150,18 +230,15 @@ function Contact() {
                         <textarea required rows="4" placeholder="WHAT'S ON YOUR MIND?" className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-500/20 focus:bg-white rounded-[2rem] p-8 text-sm font-bold transition-all outline-none resize-none"></textarea>
                       </div>
 
-                      <motion.button 
-                        onMouseMove={handleMouseMove}
-                        onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
-                        style={{ x: dx, y: dy }}
-                        whileTap={{ scale: 0.96 }}
-                        className="relative w-full py-8 bg-slate-950 text-white rounded-[2rem] overflow-hidden group shadow-2xl"
+                      <button 
+                        type="submit"
+                        className="relative w-full py-8 bg-slate-950 text-white rounded-[2rem] shadow-xl hover:bg-indigo-600 active:scale-[0.98] transition-all duration-300 group overflow-hidden"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-[0.6em]">
-                          Execute Dispatch <FaPaperPlane className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                          Execute Dispatch 
+                          <FaPaperPlane className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.22, 1, 0.36, 1]" />
-                      </motion.button>
+                      </button>
                     </form>
                   </motion.div>
                 ) : (
@@ -171,6 +248,7 @@ function Contact() {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-[#0a0a0f] rounded-[3rem] p-10 md:p-16 h-full flex flex-col justify-center border border-indigo-500/30 relative overflow-hidden shadow-2xl"
                   >
+                    {/* Background Matrix Rain (Static) */}
                     <div className="absolute inset-0 opacity-10 pointer-events-none font-mono text-[10px] text-indigo-500 overflow-hidden leading-tight">
                       {Array(25).fill("01_SUCCESS_INDEX_").map((t, i) => <div key={i}>{t.repeat(12)}</div>)}
                     </div>
@@ -192,111 +270,122 @@ function Contact() {
       </section>
 
       {/* ULTRA FOOTER */}
-      <footer className="relative z-10 pt-24 pb-12 bg-white border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 mb-20">
-            
-           {/* BRAND SIGNATURE - ELITE LAYERED STYLE */}
-<div className="relative group perspective-1000 max-w-fit cursor-default">
-  
-  {/* The "Ghost" Background Shadow - Moves slightly on hover */}
-  <span className="absolute -top-3 -left-3 text-5xl sm:text-7xl font-[1000] tracking-tighter uppercase text-slate-100/50 select-none transition-transform duration-700 group-hover:-translate-x-2 group-hover:-translate-y-1">
-    VISHAL
-  </span>
+     {/* ULTRA FOOTER V5.5 - QUANTUM MINIMALIST EDITION */}
+<footer className="relative z-10 pt-32 pb-16 bg-[#fafafa] border-t border-slate-200/60 overflow-hidden">
+  {/* Subliminal Grid Background */}
+  <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-  <div className="relative z-10 flex flex-col gap-0">
-    {/* Upper Name - Gradient Text */}
-    <h4 className="text-5xl sm:text-6xl md:text-7xl font-[1000] tracking-[-0.06em] leading-[0.8] uppercase bg-gradient-to-r from-slate-950 via-slate-800 to-slate-950 bg-clip-text text-transparent transition-all duration-500 group-hover:tracking-[-0.03em]">
-      VISHAL
-    </h4>
-
-    {/* Lower Name - Kinetic Reveal Style */}
-    <div className="flex items-end gap-3 overflow-hidden">
-      <h4 className="text-5xl sm:text-6xl md:text-7xl font-[1000] tracking-[-0.06em] leading-[0.8] uppercase text-transparent transition-all duration-700 group-hover:text-slate-950" 
-          style={{ WebkitTextStroke: "1.5px #0f172a" }}>
-        DESHMUKH
-      </h4>
+  <div className="max-w-7xl mx-auto px-6 relative z-10">
+    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-16 mb-24">
       
-      {/* Pulse Period */}
-      <span className="relative flex h-3 w-3 sm:h-4 sm:w-4 mb-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-3 w-3 sm:h-4 sm:w-4 bg-indigo-600"></span>
-      </span>
-    </div>
-  </div>
-
-  {/* Advanced Metadata - Floating Label Style */}
-  <div className="flex items-center gap-4 mt-6">
-    <div className="flex items-center justify-center px-3 py-1 bg-slate-950 rounded-full">
-       <span className="text-[8px] font-black tracking-[0.2em] uppercase text-white">
-        Pro
-      </span>
-    </div>
-    
-    <div className="h-[1px] flex-grow min-w-[30px] bg-gradient-to-r from-indigo-600 to-transparent" />
-
-    <div className="flex flex-col">
-      <span className="text-[9px] font-black tracking-[0.3em] uppercase text-slate-900">
-        Digital Architect
-      </span>
-      <span className="text-[7px] font-bold tracking-[0.1em] uppercase text-indigo-500/60 -mt-1">
-        V5.0 / STABLE REEL
-      </span>
-    </div>
-  </div>
-
-  {/* Background Glass Ornament */}
-  <div className="absolute inset-0 bg-indigo-50/0 group-hover:bg-indigo-50/40 blur-2xl transition-all duration-1000 -z-10" />
-</div>
-
-            {/* QUICK ACTIONS */}
-            <div className="grid grid-cols-2 sm:flex gap-3 w-full lg:w-auto">
-              {["LinkedIn", "Github", "Resume", "Twitter"].map((name) => (
-                <motion.a
-                  key={name}
-                  href="#"
-                  whileHover={{ scale: 1.05, backgroundColor: "#0f172a", color: "#fff" }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-center border border-slate-200 text-slate-500 transition-all"
-                >
-                  {name}
-                </motion.a>
-              ))}
-            </div>
+      {/* --- VISHAL DESHMUKH: KINETIC INTERFACE --- */}
+      <motion.div 
+        initial="initial"
+        whileHover="hover"
+        className="relative group cursor-none"
+      >
+        <div className="flex flex-col leading-[0.9]">
+          {/* First Name with Staggered Letters */}
+          <div className="flex overflow-hidden py-2">
+            {"VISHAL".split("").map((char, i) => (
+              <motion.span
+                key={i}
+                variants={{
+                  initial: { y: 0 },
+                  hover: { y: -5, color: "#4f46e5", transition: { delay: i * 0.03 } }
+                }}
+                className="text-5xl sm:text-6xl md:text-7xl font-[1000] tracking-tighter uppercase text-slate-900 inline-block"
+              >
+                {char}
+              </motion.span>
+            ))}
           </div>
 
-          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent opacity-40 mb-12" />
-
-          {/* STATUS BAR */}
-          <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-10">
-            <div className="order-2 md:order-1 flex flex-col items-center md:items-start space-y-2">
-              <p className="text-[9px] font-black tracking-[0.4em] uppercase text-slate-400">© 2026 — GLOBAL DEPLOYMENT</p>
-              <div className="flex items-center gap-3">
-                <span className="text-[11px] font-mono text-slate-900 font-black tracking-tight underline decoration-indigo-500 underline-offset-4">V5.0.0_STABLE</span>
-                <span className="text-[10px] font-mono text-slate-300 uppercase">JALNA_IN</span>
-              </div>
+          {/* Last Name with Outline & Tracking Morph */}
+          <motion.div 
+            variants={{
+              initial: { letterSpacing: "-0.05em" },
+              hover: { letterSpacing: "0.05em", transition: { duration: 0.8, ease: "circOut" } }
+            }}
+            className="relative flex items-center gap-4"
+          >
+            <h4 className="text-5xl sm:text-6xl md:text-7xl font-[1000] uppercase text-transparent transition-all duration-700 group-hover:text-slate-900" 
+                style={{ WebkitTextStroke: "1px #0f172a" }}>
+              DESHMUKH
+            </h4>
+            
+            {/* Minimalist Status Bar */}
+            <div className="h-1 w-12 bg-slate-900 rounded-full mt-4 overflow-hidden">
+              <motion.div 
+                animate={{ x: [-48, 48] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                className="h-full w-full bg-indigo-500"
+              />
             </div>
-
-            <div className="order-1 md:order-2 flex justify-center">
-              <div className="px-6 py-3 bg-slate-950 rounded-full flex items-center gap-4 shadow-xl border border-slate-800">
-                <div className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </div>
-                <span className="text-[9px] font-mono text-emerald-400 tracking-[0.2em] uppercase">Systems_Online</span>
-              </div>
-            </div>
-
-            <div className="order-3 text-center md:text-right space-y-1">
-              <div className="flex items-center justify-center md:justify-end gap-2 text-indigo-600 mb-1">
-                <FaSatellite size={10}/>
-                <span className="text-[9px] font-black uppercase tracking-[0.4em]">Locate_Node</span>
-              </div>
-              <div className="font-mono text-[10px] text-slate-400 tracking-tighter">19.8415° N, 75.8833° E</div>
-            </div>
-          </div>
+          </motion.div>
         </div>
-      </footer>
+
+        {/* Dynamic Badge Row */}
+        <div className="flex items-center gap-3 mt-6">
+          <div className="px-2 py-0.5 border border-slate-900 rounded flex items-center gap-2">
+            <div className="w-1 h-1 bg-slate-900 rounded-full animate-pulse" />
+            <span className="text-[8px] font-bold tracking-[0.2em] uppercase text-slate-900">Developer_Core</span>
+          </div>
+          <span className="text-[9px] font-medium tracking-[0.3em] uppercase text-slate-400">/</span>
+          <span className="text-[9px] font-black tracking-[0.4em] uppercase text-indigo-600/70">Frontend_Architect</span>
+        </div>
+      </motion.div>
+
+      {/* --- HYPER-MINIMAL NAV --- */}
+      <div className="grid grid-cols-2 gap-2 w-full lg:w-auto">
+        {["LinkedIn", "Github", "Resume", "Twitter"].map((name) => (
+          <motion.a 
+            key={name} 
+            href="#" 
+            whileHover={{ y: -2, backgroundColor: "#000", color: "#fff" }} 
+            className="px-6 py-3 border border-slate-200 text-[10px] font-bold uppercase tracking-widest text-slate-500 rounded-sm transition-all flex items-center justify-between group/link"
+          >
+            {name}
+            <span className="opacity-0 group-hover/link:opacity-100 transition-opacity ml-2">→</span>
+          </motion.a>
+        ))}
+      </div>
+    </div>
+
+    {/* Metadata Floor */}
+    <div className="pt-12 border-t border-slate-200/60 grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
+      
+      <div className="flex flex-col gap-1">
+        <span className="text-[8px] font-black text-slate-400 tracking-[0.5em] uppercase text-center md:text-left">Terminal_Output</span>
+        <div className="font-mono text-[10px] text-slate-800 flex items-center gap-2 justify-center md:justify-start">
+          <span className="text-emerald-500">●</span> 
+          <span>System.Ready(v5.5.0)</span>
+          <span className="text-slate-300">//</span>
+          <span className="hover:text-indigo-600 transition-colors cursor-pointer">Jalna_IN</span>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center justify-center space-y-4">
+         <div className="text-[10px] font-black tracking-[1em] uppercase text-slate-300 ml-[1em]">Scroll</div>
+         <motion.div 
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+          className="w-[1px] h-12 bg-gradient-to-b from-indigo-500 to-transparent" 
+         />
+      </div>
+
+      <div className="flex flex-col items-center md:items-end gap-2">
+        <div className="flex items-center gap-4 text-[10px] font-mono text-slate-400">
+           <span>LOC: 19.8415 N</span>
+           <span>75.8833 E</span>
+        </div>
+        <p className="text-[9px] font-black tracking-[0.3em] uppercase text-slate-900 opacity-40">
+          © 2026 — Vishal Deshmukh
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }
