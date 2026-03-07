@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { FaDownload, FaCommentDots, FaTerminal, FaCode, FaServer, FaReact, FaShieldAlt } from "react-icons/fa";
-import profile1 from "../../assets/profile2.webp";
+import profile1 from "../../assets/vishal.png";
 import cv from "../../assets/Vishal_Resume.pdf";
 
 // --- Magnetic Interaction with Spring Physics ---
