@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { 
-  FaGithub, FaRocket, FaArrowRight, FaTimes, FaCode, 
-  FaLaptopCode, FaRobot, FaShoppingCart, FaPlayCircle, FaCar 
+  FaGithub, FaRocket, FaTimes, FaLaptopCode, 
+  FaRobot, FaShoppingCart, FaPlayCircle, FaCar 
 } from "react-icons/fa";
 
-// --- EXPANDED PROJECT DATA ---
+// --- PROJECT DATA ---
 const projectsData = [
   {
     title: "Vishak Restaurant",
@@ -116,7 +116,7 @@ const ProjectCard = ({ project, onClick, idx }) => {
         <motion.img 
           layoutId={`img-${project.title}`}
           src={project.image} 
-          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1 group-hover:blur-[2px]"
+          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:blur-[2px]"
         />
         <div className="absolute inset-0 bg-[#030305]/60 group-hover:bg-[#030305]/40 transition-colors" />
       </div>
@@ -144,7 +144,7 @@ const ProjectCard = ({ project, onClick, idx }) => {
   );
 };
 
-// --- MAIN SECTION ---
+// --- MAIN PROJECTS COMPONENT ---
 const Projects = () => {
   const [filter, setFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
@@ -159,42 +159,107 @@ const Projects = () => {
   }, [selectedProject]);
 
   return (
-    <section id="projects" className="py-24 md:py-32 px-4 md:px-12 bg-[#030305] text-white relative min-h-screen">
+    <section id="projects" className="py-24 md:py-32 px-4 md:px-12 bg-[#030305] text-white relative min-h-screen overflow-hidden">
       
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 blur-[150px] rounded-full" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/10 blur-[150px] rounded-full" />
+      {/* Background Decorative Glows */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto relative z-10">
         
-        {/* Header */}
-        <div className="mb-20 space-y-6">
-          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="flex items-center gap-4">
-            <span className="h-[1px] w-12 bg-indigo-500" />
-            <span className="text-indigo-400 font-bold uppercase tracking-widest text-[10px]">Curated Portfolio</span>
-          </motion.div>
+        {/* --- ELITE NEO-BRUTALIST HEADER START --- */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24 relative">
+          {/* Absolute Background Accent - Large Outlined Number */}
+          <div className="absolute -top-20 -left-10 text-[15rem] font-black text-white/[0.03] select-none pointer-events-none italic tracking-tighter">
+            02
+          </div>
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
-            <motion.h2 initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} className="text-6xl md:text-[120px] font-black tracking-tighter leading-none uppercase italic">
-              Major <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-cyan-400 to-purple-500">Works.</span>
-            </motion.h2>
-
-            <div className="flex flex-wrap gap-2 p-1 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-2xl">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setFilter(cat)}
-                  className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                    filter === cat ? "bg-white text-black scale-105" : "text-slate-500 hover:text-white"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+          <div className="relative group">
+            {/* Animated Subtitle with Scanning Line */}
+            <div className="relative overflow-hidden mb-6">
+              <motion.span 
+                initial={{ y: "100%" }}
+                whileInView={{ y: 0 }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                className="text-indigo-500 text-[11px] font-black uppercase tracking-[0.6em] flex items-center gap-4"
+              >
+                <span className="w-8 h-[1px] bg-indigo-500" />
+                Curated Selection
+              </motion.span>
             </div>
+
+            <motion.h2 
+              className="relative z-10 font-[1000] uppercase italic leading-[0.85] flex flex-col cursor-default"
+            >
+              {/* "Major" with Mask Reveal & Skew Effect */}
+              <motion.div 
+                initial={{ opacity: 0, x: -100, skewX: -20 }}
+                whileInView={{ opacity: 1, x: 0, skewX: 0 }}
+                transition={{ duration: 0.8, ease: "anticipate" }}
+                className="text-[clamp(3.5rem,12vw,7rem)] tracking-[-0.06em] text-white flex items-end"
+              >
+                Major
+                <motion.span 
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "80px" }}
+                  transition={{ delay: 0.8, duration: 1 }}
+                  className="h-[2px] bg-gradient-to-r from-indigo-600 to-transparent ml-6 hidden md:block mb-6" 
+                />
+              </motion.div>
+              
+              {/* "Works." with Dynamic Shadow and Layered Stroke */}
+              <motion.div 
+                initial={{ opacity: 0, x: 100, skewX: 20 }}
+                whileInView={{ opacity: 1, x: 0, skewX: 0 }}
+                transition={{ duration: 0.8, ease: "anticipate", delay: 0.1 }}
+                className="relative text-[clamp(3.5rem,14vw,8.5rem)] tracking-[-0.08em] ml-0 md:ml-32"
+              >
+                {/* Shadow Layer */}
+                <span className="absolute inset-0 text-indigo-600/20 translate-x-2 translate-y-2 blur-sm">
+                  Works.
+                </span>
+                
+                {/* Main Text Layer with Mesh Gradient Stroke */}
+                <span 
+                  className="relative text-transparent bg-clip-text bg-gradient-to-br from-white via-white/80 to-indigo-500/50"
+                  style={{ 
+                    WebkitTextStroke: "1px rgba(255,255,255,0.2)",
+                  }}
+                >
+                  Works<span className="text-indigo-500">.</span>
+                </span>
+              </motion.div>
+            </motion.h2>
+          </div>
+
+          {/* Refined "Control Center" Filter Buttons */}
+          <div className="flex flex-wrap gap-2 p-2 bg-[#0a0a0c] border border-white/10 rounded-2xl self-start lg:self-end shadow-2xl">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`relative px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-500 overflow-hidden group/btn ${
+                  filter === cat 
+                    ? "text-black" 
+                    : "text-slate-500 hover:text-white"
+                }`}
+              >
+                {/* Background Slide Effect for Buttons */}
+                {filter === cat && (
+                  <motion.div 
+                    layoutId="activeFilter"
+                    className="absolute inset-0 bg-white"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{cat}</span>
+              </button>
+            ))}
           </div>
         </div>
+        {/* --- ELITE NEO-BRUTALIST HEADER END --- */}
 
-        {/* Bento Grid */}
+        {/* Projects Bento Grid */}
         <motion.div layout className="grid grid-cols-1 md:grid-cols-4 gap-6 md:auto-rows-[300px]">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, idx) => (
@@ -203,7 +268,7 @@ const Projects = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Modal */}
+        {/* Modal Detail View */}
         <AnimatePresence>
           {selectedProject && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -223,7 +288,7 @@ const Projects = () => {
                     src={selectedProject.image} 
                     className="w-full h-full object-cover" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-transparent via-[#0a0a0c]/20 to-[#0a0a0c]" />
+                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-transparent via-[#0a0a0c]/40 to-[#0a0a0c]" />
                 </div>
 
                 <div className="w-full lg:w-2/5 p-10 md:p-14 flex flex-col justify-between overflow-y-auto">
@@ -233,7 +298,7 @@ const Projects = () => {
                     </button>
                     
                     <span className="text-indigo-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">{selectedProject.category}</span>
-                    <motion.h3 layoutId={`title-${selectedProject.title}`} className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none italic">
+                    <motion.h3 layoutId={`title-${selectedProject.title}`} className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none italic text-white">
                       {selectedProject.title}
                     </motion.h3>
                     <p className="text-slate-400 leading-relaxed mb-10 text-sm md:text-base">
@@ -250,10 +315,10 @@ const Projects = () => {
                   </div>
 
                   <div className="flex gap-4">
-                    <a href={selectedProject.live} className="flex-1 bg-indigo-600 hover:bg-indigo-500 py-5 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all">
+                    <a href={selectedProject.live} target="_blank" rel="noreferrer" className="flex-1 bg-indigo-600 hover:bg-indigo-500 py-5 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all text-white">
                       Live <FaRocket />
                     </a>
-                    <a href={selectedProject.code} className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 py-5 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all">
+                    <a href={selectedProject.code} target="_blank" rel="noreferrer" className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 py-5 rounded-2xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest transition-all text-white">
                       Code <FaGithub />
                     </a>
                   </div>

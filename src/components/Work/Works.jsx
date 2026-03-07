@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTerminal, FaCode, FaExternalLinkAlt, FaGithub, FaBolt, FaMicrochip, FaRocket, FaEye, FaHotel } from "react-icons/fa";
+import { 
+  FaGithub, FaExternalLinkAlt, FaBolt, 
+  FaHotel, FaTerminal, FaCode 
+} from "react-icons/fa";
 
 const projects = [
   {
@@ -87,18 +90,116 @@ const Works = () => {
           </motion.div>
 
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase leading-[0.8] italic">
-              CRAFTED <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-400 to-cyan-400 not-italic">WORKS.</span>
-            </h2>
+            {/* 10x ADVANCE HEADER */}
+            <div className="relative">
+              <motion.h2 
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+                className="relative flex flex-col leading-[0.85] md:leading-[0.75] select-none"
+              >
+                {/* TOP ROW: CRAFTED */}
+                <div className="flex flex-wrap overflow-hidden pb-4">
+                  {"CRAFTED".split("").map((char, i) => (
+                    <motion.span
+                      key={i}
+                      variants={{
+                        initial: { y: 100, opacity: 0, filter: "blur(10px)", scale: 0.8 },
+                        animate: { y: 0, opacity: 1, filter: "blur(0px)", scale: 1 }
+                      }}
+                      whileHover={{ 
+                        y: -10, 
+                        scale: 1.1, 
+                        color: "#6366f1",
+                        transition: { duration: 0.2 } 
+                      }}
+                      transition={{ 
+                        duration: 0.8, 
+                        delay: i * 0.05, 
+                        ease: [0.16, 1, 0.3, 1] 
+                      }}
+                      className="text-[clamp(2.5rem,12vw,8rem)] font-[1000] text-white tracking-tighter uppercase italic inline-block cursor-default"
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </div>
+
+                {/* BOTTOM ROW: WORKS */}
+                <div className="relative inline-block group w-fit">
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
+                    className="text-[clamp(3rem,15vw,11rem)] font-black tracking-[-0.07em] uppercase relative z-10 block"
+                    style={{
+                      color: 'transparent',
+                      WebkitTextStroke: '1px rgba(255,255,255,0.2)',
+                      backgroundImage: `url("https://www.transparenttextures.com/patterns/carbon-fibre.png"), linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #6366f1)`,
+                      WebkitBackgroundClip: 'text',
+                      backgroundSize: '200% auto',
+                    }}
+                    animate={{ backgroundPosition: ['0% center', '200% center'] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                  >
+                    WORKS<span className="text-white">.</span>
+                  </motion.span>
+
+                  {/* Holographic Underlay */}
+                  <motion.span 
+                    animate={{ 
+                      opacity: [0, 0.5, 0],
+                      x: [-2, 2, -2],
+                      y: [1, -1, 1]
+                    }}
+                    transition={{ duration: 0.2, repeat: Infinity }}
+                    className="absolute inset-0 text-[clamp(3rem,15vw,11rem)] font-black tracking-[-0.07em] uppercase text-cyan-500/30 z-0 pointer-events-none blur-[2px] hidden md:block"
+                  >
+                    WORKS
+                  </motion.span>
+                </div>
+
+                {/* SYSTEM BAR ACCENT */}
+                <div className="flex flex-col md:flex-row md:items-center gap-4 mt-8">
+                  <div className="flex items-center gap-3">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      whileInView={{ width: "40px" }}
+                      className="h-[1px] bg-indigo-500"
+                    />
+                    <span className="text-[10px] md:text-xs font-mono text-indigo-400 font-bold tracking-[0.3em] uppercase">
+                      Production.Stable
+                    </span>
+                  </div>
+                  <div className="hidden md:flex items-center gap-4 ml-auto">
+                    <div className="flex gap-1">
+                      {[...Array(4)].map((_, i) => (
+                        <motion.div 
+                          key={i}
+                          animate={{ height: [4, 12, 4] }}
+                          transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
+                          className="w-[2px] bg-white/20"
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-tighter">
+                      Lat: 19.84 // Lon: 75.88
+                    </span>
+                  </div>
+                </div>
+              </motion.h2>
+            </div>
 
             {/* NEOMORPHIC FILTER */}
-            <div className="flex overflow-x-auto pb-2 md:pb-0 gap-2 no-scrollbar scroll-smooth">
+            <div className="flex overflow-x-auto pb-4 md:pb-0 gap-2 no-scrollbar scroll-smooth h-fit">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setFilter(cat)}
                   className={`whitespace-nowrap px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border ${
-                    filter === cat ? "bg-indigo-600 border-indigo-400 text-white shadow-[0_0_20px_rgba(79,70,229,0.4)]" : "bg-white/5 border-white/10 text-zinc-500 hover:text-white hover:border-white/20"
+                    filter === cat 
+                    ? "bg-indigo-600 border-indigo-400 text-white shadow-[0_0_20px_rgba(79,70,229,0.4)]" 
+                    : "bg-white/5 border-white/10 text-zinc-500 hover:text-white hover:border-white/20"
                   }`}
                 >
                   {cat}
@@ -136,22 +237,28 @@ const ProjectCard = ({ project, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       onMouseMove={handleMouseMove}
-      className={`group relative rounded-[2rem] bg-[#0a0a0f] border border-white/10 overflow-hidden ${project.colSpan} h-[450px] md:h-[550px] transition-all duration-700 hover:border-indigo-500/40`}
+      className={`group relative rounded-[2.5rem] bg-[#0a0a0f] border border-white/10 overflow-hidden ${project.colSpan} h-[450px] md:h-[550px] transition-all duration-700 hover:border-indigo-500/40`}
     >
       {/* INTERACTIVE RADIAL GLOW */}
       <div 
         className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block"
-        style={{ background: `radial-gradient(500px circle at ${mousePos.x}px ${mousePos.y}px, rgba(99,102,241,0.08), transparent 40%)` }}
+        style={{ 
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(99,102,241,0.1), transparent 40%)` 
+        }}
       />
 
       {/* PROJECT MEDIA */}
       <div className="absolute inset-0 z-0">
-        <img src={project.img} className="w-full h-full object-cover opacity-30 grayscale group-hover:opacity-50 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-in-out" alt={project.title} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020205] via-[#020205]/70 to-transparent" />
+        <img 
+          src={project.img} 
+          className="w-full h-full object-cover opacity-30 grayscale group-hover:opacity-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out" 
+          alt={project.title} 
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020205] via-[#020205]/60 to-transparent" />
       </div>
 
       {/* HUD ELEMENTS */}
-      <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-30">
+      <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-30">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xl">
             {project.category === "UI / UX" ? <FaHotel className="text-indigo-400 text-[10px]" /> : <FaBolt className="text-indigo-400 text-[10px]" />}
@@ -160,21 +267,20 @@ const ProjectCard = ({ project, index }) => {
           <span className="text-zinc-600 font-mono text-[8px] tracking-[0.3em] uppercase ml-1">{project.metric}</span>
         </div>
 
-        {/* COMPACT ACTIONS (Universal) */}
         <div className="flex gap-2">
-          <a href={project.github} className="w-9 h-9 md:w-11 md:h-11 bg-white/5 hover:bg-white/10 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/10 text-white transition-all active:scale-90">
+          <a href={project.github} target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 hover:bg-white/10 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/10 text-white transition-all active:scale-90">
             <FaGithub size={18}/>
           </a>
-          <a href={project.link} className="w-9 h-9 md:w-11 md:h-11 bg-indigo-600 hover:bg-indigo-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 transition-all active:scale-90">
+          <a href={project.link} target="_blank" rel="noreferrer" className="w-10 h-10 bg-indigo-600 hover:bg-indigo-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 transition-all active:scale-90">
             <FaExternalLinkAlt size={14}/>
           </a>
         </div>
       </div>
 
       {/* CONTENT BLOCK */}
-      <div className="absolute bottom-0 left-0 w-full p-8 md:p-10 z-20">
+      <div className="absolute bottom-0 left-0 w-full p-8 md:p-12 z-20">
         <div className="space-y-4">
-          <h3 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none transition-transform duration-500 group-hover:translate-x-2">
+          <h3 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none transition-transform duration-500 group-hover:translate-x-3">
             {project.title}
           </h3>
           
@@ -193,7 +299,7 @@ const ProjectCard = ({ project, index }) => {
       </div>
 
       {/* SCANNER LINE */}
-      <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity">
+      <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-40 transition-opacity">
         <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-400 to-transparent absolute top-0 animate-scan" />
       </div>
 

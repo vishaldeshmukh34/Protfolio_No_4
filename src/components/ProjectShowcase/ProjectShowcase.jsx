@@ -108,14 +108,116 @@ const ProjectShowcase = () => {
               <span className="text-indigo-400 font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs">Selected Works</span>
             </motion.div>
             
-            <motion.h2 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-[clamp(3rem,15vw,12rem)] font-black tracking-tighter leading-[0.85] uppercase italic"
-            >
-              WORK <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-400 to-rose-400">ARCHIVE.</span>
-            </motion.h2>
+           <div className="relative mb-24 group/header">
+  {/* Cinematic Background Index */}
+  <div className="absolute -top-16 -left-8 text-[12rem] font-[1000] text-white/[0.015] italic select-none pointer-events-none tracking-tighter mix-blend-plus-lighter">
+    INDEX_02
+  </div>
+
+  <motion.h2 
+    initial="initial"
+    whileInView="animate"
+    viewport={{ once: true }}
+    className="relative flex flex-col leading-[0.7] select-none"
+  >
+    {/* Top Row: WORK (With Variable Letter Spacing) */}
+    <div className="flex overflow-hidden">
+      {"WORK".split("").map((letter, i) => (
+        <motion.span
+          key={i}
+          variants={{
+            initial: { y: "110%", opacity: 0, rotateZ: 10 },
+            animate: { y: 0, opacity: 1, rotateZ: 0 }
+          }}
+          transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[clamp(2.5rem,8vw,4.5rem)] font-[1000] tracking-[-0.05em] text-white uppercase italic inline-block mr-[0.02em]"
+        >
+          {letter}
+        </motion.span>
+      ))}
+    </div>
+
+    {/* Bottom Row: THE ARCHIVE (With Advanced Scanning) */}
+    <div className="relative inline-block ml-0 md:ml-12 mt-4 overflow-visible">
+      
+      {/* 1. Base Layer: Dim Outline */}
+      <span className="text-[clamp(3.5rem,14vw,8.5rem)] font-[1000] tracking-[-0.1em] uppercase italic text-transparent block"
+            style={{ WebkitTextStroke: '1px rgba(255,255,255,0.08)' }}>
+        ARCHIVE<span className="text-indigo-900/40">.</span>
+      </span>
+
+      {/* 2. Reactive Fill Layer: Revealed by Mask */}
+      <motion.span 
+        className="absolute inset-0 text-[clamp(3.5rem,14vw,8.5rem)] font-[1000] tracking-[-0.1em] uppercase italic text-white z-20 block pointer-events-none"
+        style={{
+          clipPath: "inset(0 100% 0 0)", // Hidden by default
+        }}
+        animate={{ 
+          clipPath: [
+            "inset(0 100% 0 0)", 
+            "inset(0 0% 0 0)", 
+            "inset(0 0% 0 100%)"
+          ] 
+        }}
+        transition={{ 
+          duration: 3, 
+          repeat: Infinity, 
+          ease: "easeInOut", 
+          repeatDelay: 1 
+        }}
+      >
+        ARCHIVE<span className="text-indigo-500">.</span>
+      </motion.span>
+
+      {/* 3. The Multi-Phase Beam */}
+      <motion.div
+        className="absolute top-[-10%] bottom-[-10%] w-[15%] z-30 pointer-events-none overflow-visible"
+        animate={{ left: ["-20%", "120%"] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
+      >
+        {/* Core Sharp Beam */}
+        <div className="h-full w-[2px] bg-white shadow-[0_0_20px_#fff,0_0_40px_#6366f1] opacity-80" />
+        
+        {/* Chromatic Trailing Glow */}
+        <div className="absolute top-0 left-[-40px] right-0 h-full bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent blur-md -skew-x-12" />
+        
+        {/* Data Flash Dot */}
+        <div className="absolute top-0 left-[-4px] w-2 h-2 bg-white rounded-full shadow-[0_0_15px_#fff]" />
+        <div className="absolute bottom-0 left-[-4px] w-2 h-2 bg-white rounded-full shadow-[0_0_15px_#fff]" />
+      </motion.div>
+
+      {/* 4. Underlying Cinematic Glow */}
+      <span className="absolute inset-0 text-[clamp(3.5rem,14vw,8.5rem)] font-[1000] tracking-[-0.1em] uppercase italic blur-[60px] opacity-10 text-indigo-500 pointer-events-none select-none mix-blend-screen">
+        ARCHIVE
+      </span>
+    </div>
+
+    {/* Footer: UI Status bar */}
+    <div className="flex items-center gap-6 mt-10 ml-0 md:ml-12">
+      <div className="flex items-center gap-2">
+        <div className="h-[1px] w-12 bg-white/20" />
+        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest italic">System.Ready</span>
+      </div>
+      
+      <div className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-md">
+        <span className="text-[9px] font-mono text-indigo-400 uppercase tracking-[0.2em]">
+          Bento_Grid_V5
+        </span>
+      </div>
+
+      <div className="flex gap-1">
+        {[1,2,3].map(i => (
+          <motion.div 
+            key={i}
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+            className="w-1 h-1 bg-indigo-500" 
+          />
+        ))}
+      </div>
+    </div>
+  </motion.h2>
+</div>
           </div>
 
           {/* Optimized Filter Bar */}
