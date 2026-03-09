@@ -117,7 +117,7 @@ function Navbar() {
           </button>
         </div>
 
-      {/* 6. FULL SCREEN OVERLAY MENU */}
+      {/* 6. FULL SCREEN OVERLAY MENU (Dark Theme) */}
 <AnimatePresence>
   {menuOpen && (
     <motion.div 
@@ -125,14 +125,14 @@ function Navbar() {
       animate={{ x: 0, borderRadius: '0' }}
       exit={{ x: '100%', borderRadius: '100px 0 0 100px' }}
       transition={{ type: "spring", damping: 30, stiffness: 200 }}
-      className="fixed inset-0 bg-white z-[150] flex flex-col p-8 lg:hidden shadow-2xl"
+      className="fixed inset-0 bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-900 z-[150] flex flex-col p-8 lg:hidden shadow-2xl"
     >
       {/* 1. Menu Top Bar */}
       <div className="flex justify-between items-center mb-16">
         <motion.span 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="font-[1000] text-3xl tracking-tighter text-slate-950"
+          className="font-[1000] text-3xl tracking-tighter text-sky-400"
         >
           V.
         </motion.span>
@@ -140,15 +140,15 @@ function Navbar() {
         <motion.button 
           whileTap={{ scale: 0.9 }}
           onClick={() => setMenuOpen(false)} 
-          className="p-5 bg-slate-900 text-white rounded-full shadow-xl"
+          className="p-5 bg-sky-500/10 text-sky-400 rounded-full border border-sky-500/20 backdrop-blur-md"
         >
           <HiX size={26}/>
         </motion.button>
       </div>
 
-      {/* 2. Navigation Links (Deep Black Text) */}
+      {/* 2. Navigation Links */}
       <div className="flex flex-col gap-4">
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mb-4 ml-1">Menu</p>
+        <p className="text-[10px] font-black text-sky-500/50 uppercase tracking-[0.5em] mb-4 ml-1">Navigation</p>
         
         {navItems.map((item, i) => (
           <motion.div
@@ -164,40 +164,54 @@ function Navbar() {
           >
             <button
               onClick={() => scrollToSection(item)}
-              // text-slate-950 is the "True Black" you're looking for
-              className="group relative flex items-center gap-6 text-left"
+              className="group relative flex items-center gap-4 text-left"
             >
-              <span className="text-sm font-black text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity">/0{i+1}</span>
-              <span className="text-6xl font-[1000] uppercase tracking-tighter text-slate-950 group-hover:text-indigo-600 transition-all duration-300 group-hover:pl-4">
-                {item}
+              <span className="text-[10px] font-black text-sky-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                /0{i+1}
               </span>
+
+              {/* TEXT WRAPPER WITH BLACK LINE */}
+              <div className="relative">
+                {/* THE BLACK LINE (Small anchor line with radius) */}
+                <motion.div 
+                  className="absolute -bottom-1 left-0 h-[4px] bg-slate-950 rounded-full -z-10"
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ delay: 0.5 + (i * 0.1), duration: 0.5 }}
+                />
+                
+                <span className="text-4xl font-[1000] uppercase tracking-tighter text-sky-400 group-hover:text-white transition-all duration-300 group-hover:pl-2">
+                  {item}
+                </span>
+              </div>
             </button>
           </motion.div>
         ))}
       </div>
 
       {/* 3. Bottom Quick Contact */}
-      <div className="mt-auto border-t border-slate-100 pt-10 flex justify-between items-end">
+      <div className="mt-auto border-t border-sky-500/10 pt-10 flex justify-between items-end">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Located In</p>
-          <p className="text-slate-950 font-black text-xl">Maharashtra, India</p>
+          <p className="text-[10px] font-black text-sky-500/50 uppercase tracking-widest mb-1">Located In</p>
+          <p className="text-sky-100 font-black text-xl">Maharashtra, India</p>
         </motion.div>
 
         <motion.div 
           animate={{ rotate: 360 }} 
           transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-          className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center"
+          className="w-16 h-16 bg-sky-500/5 border border-sky-500/10 rounded-full flex items-center justify-center"
         >
-          <FaCompass className="text-indigo-600" size={32} />
+          <FaCompass className="text-sky-400" size={32} />
         </motion.div>
       </div>
 
-      {/* Background Decor (Subtle) */}
-      <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-indigo-50 rounded-full blur-3xl -z-10" />
+      {/* Background Decor */}
+      <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-sky-600/20 rounded-full blur-3xl -z-10" />
+      <div className="absolute top-[20%] left-[-10%] w-40 h-40 bg-blue-600/10 rounded-full blur-3xl -z-10" />
     </motion.div>
   )}
 </AnimatePresence>
@@ -206,7 +220,6 @@ function Navbar() {
   );
 }
 
-// Helper component for Magnetic-style icons
 function SocialIcon({ Icon, href }) {
   return (
     <motion.a 
