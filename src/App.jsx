@@ -70,34 +70,11 @@ function App() {
         </section>
       </main>
 
-      {/* PREMIUM FOOTER WITH MAGNETIC SOCIAL LINKS */}
-      <footer className="py-20 border-t border-white/5 flex flex-col items-center gap-8">
-        <div className="flex gap-8">
-          <Magnetic>
-            <a 
-              href="https://github.com/vishaldeshmukh34" 
-              target="_blank" 
-              rel="noreferrer"
-              className="p-5 bg-white/5 rounded-full border border-white/10 hover:border-white/20 transition-all duration-300"
-            >
-              GitHub
-            </a>
-          </Magnetic>
-
-          <Magnetic>
-            <a 
-              href="#" 
-              target="_blank" 
-              rel="noreferrer"
-              className="p-5 bg-white/5 rounded-full border border-white/10 hover:border-white/20 transition-all duration-300"
-            >
-              LinkedIn
-            </a>
-          </Magnetic>
-        </div>
+     
+       
         
         <Footer />
-      </footer>
+      
 
     </div>
   );

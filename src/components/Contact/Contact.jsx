@@ -286,12 +286,25 @@ function Contact() {
               </div>
             </motion.div>
             <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 w-full lg:w-auto">
-              {["LinkedIn", "Github", "Resume", "Twitter"].map((name) => (
-                <motion.a key={name} href="#" whileHover={{ y: -2, backgroundColor: "#000", color: "#fff" }} className="px-4 py-3 md:px-6 md:py-3 border border-slate-200 text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500 rounded-sm transition-all flex items-center justify-between group/link">
-                  {name} <span className="opacity-0 group-hover/link:opacity-100 transition-opacity ml-2">→</span>
-                </motion.a>
-              ))}
-            </div>
+  {[
+    { name: "LinkedIn", href: "https://www.linkedin.com/in/vishal-deshmukh79/" },
+    { name: "Github", href: "https://github.com/vishaldeshmukh34" },
+    { name: "Resume", href: "#" },
+    { name: "Instagram", href: "https://app.joinsuperset.com/students" }, // New link
+    
+    
+  ].map((link) => (
+    <motion.a
+      key={link.name}
+      href={link.href}
+      whileHover={{ y: -2, backgroundColor: "#000", color: "#fff" }}
+      className="px-4 py-3 md:px-6 md:py-3 border border-slate-200 text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500 rounded-sm transition-all flex items-center justify-between group/link"
+    >
+      {link.name} 
+      <span className="opacity-0 group-hover/link:opacity-100 transition-opacity ml-2">→</span>
+    </motion.a>
+  ))}
+</div>
           </div>
           <div className="pt-10 border-t border-slate-200/60 grid grid-cols-1 md:grid-cols-3 gap-8 items-center md:items-end">
             <div className="flex flex-col gap-1 items-center md:items-start order-2 md:order-1">
