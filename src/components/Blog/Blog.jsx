@@ -1,193 +1,204 @@
-import React, { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll, useVelocity } from "framer-motion";
-import { FaArrowRight, FaTerminal, FaClock, FaPlus, FaLayerGroup, FaShareAlt } from "react-icons/fa";
+import React, { useRef, useState, useMemo } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { FaArrowRight, FaTerminal, FaClock, FaPlus, FaLayerGroup } from "react-icons/fa";
 
-// --- COMPONENT: GRAIN OVERLAY ---
-const GrainOverlay = () => {
-  const { scrollYProgress } = useScroll();
-  const scrollVelocity = useVelocity(scrollYProgress);
-  
-  const grainOpacity = useTransform(scrollVelocity, [-1500, 0, 1500], [0.12, 0.04, 0.12]);
-  const grainScale = useTransform(scrollVelocity, [-1500, 0, 1500], [1.1, 1, 1.1]);
+const blogs = [
+  { 
+    id: 1, 
+    title: "Mastering Core Java", 
+    category: "Backend", 
+    description: "Deep dive into JVM internals and high-concurrency patterns for scalable enterprise apps.", 
+    link: "https://github.com/vishaldeshmukh34/Servlet/tree/main/Servlet", 
+    readTime: "8 min", 
+    img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" 
+  },
+  { 
+    id: 2, 
+    title: "Tailwind CSS Mastery", 
+    category: "Design", 
+    description: "Architecting scalable design systems with utility-first principles and fluid layouts.", 
+    link: "#", 
+    readTime: "5 min", 
+    img: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1931&auto=format&fit=crop" 
+  },
+  { 
+    id: 3, 
+    title: "Modern JavaScript", 
+    category: "Development", 
+    description: "Explaining the Event Loop and Async patterns that power the high-performance modern web.", 
+    link: "#", 
+    readTime: "12 min", 
+    img: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?q=80&w=2070&auto=format&fit=crop" 
+  },
+];
 
-  return (
-    <motion.div 
-      style={{ opacity: grainOpacity, scale: grainScale }}
-      className="fixed inset-0 pointer-events-none z-[100] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat will-change-transform"
-    />
-  );
-};
-
-// --- COMPONENT: DYNAMIC PROGRESS BAR ---
-const ScrollProgress = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
-  return (
-    <motion.div 
-      className="fixed top-0 left-0 right-0 h-[2px] md:h-[4px] bg-white z-[1000] origin-left"
-      style={{ scaleX }}
-    />
-  );
-};
-
-// --- COMPONENT: CUSTOM LIQUID CURSOR (Hidden on Touch Devices) ---
-const CustomCursor = ({ isHovering }) => {
-  const [isMobile, setIsMobile] = useState(false);
-  const mouseX = useMotionValue(-100);
-  const mouseY = useMotionValue(-100);
-
-  const springConfig = { damping: 25, stiffness: 400, mass: 0.5 };
-  const cursorX = useSpring(mouseX, springConfig);
-  const cursorY = useSpring(mouseY, springConfig);
-
-  useEffect(() => {
-    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
-    const moveMouse = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-    if (!isMobile) {
-      window.addEventListener("mousemove", moveMouse);
-      return () => window.removeEventListener("mousemove", moveMouse);
-    }
-  }, [isMobile]);
-
-  if (isMobile) return null;
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center overflow-hidden"
-      style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%" }}
-      animate={{ width: isHovering ? 100 : 16, height: isHovering ? 100 : 16 }}
-    >
-      <AnimatePresence>
-        {isHovering && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="text-[10px] font-black text-black uppercase tracking-widest"
-          >
-            Read
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-};
-
-const BlogCard = ({ blog, index, setCursorHover }) => {
+const BlogCard = ({ blog, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
-  // Reduced tilt for mobile to prevent weird clipping
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { stiffness: 80, damping: 20 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), { stiffness: 80, damping: 20 });
+  const mouseX = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseY = useSpring(y, { stiffness: 150, damping: 20 });
+
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = cardRef.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
 
   return (
     <motion.div
       ref={cardRef}
-      onMouseMove={(e) => {
-        const rect = cardRef.current.getBoundingClientRect();
-        x.set((e.clientX - rect.left) / rect.width - 0.5);
-        y.set((e.clientY - rect.top) / rect.height - 0.5);
-      }}
-      onMouseEnter={() => setCursorHover(true)}
-      onMouseLeave={() => { x.set(0); y.set(0); setCursorHover(false); }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      viewport={{ once: true }}
       transition={{ duration: 0.8, delay: index * 0.1 }}
-      className="group relative bg-[#0a0a0a] rounded-[2rem] md:rounded-[3.5rem] p-3 md:p-5 border border-white/5"
+      className="group relative bg-gradient-to-br from-slate-900 to-black rounded-[2rem] md:rounded-[2.5rem] p-4 border border-white/10 shadow-2xl transition-all duration-500 hover:border-indigo-500/50"
     >
-      <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
-        <div className="relative h-[350px] sm:h-[450px] lg:h-[550px] overflow-hidden rounded-[1.8rem] md:rounded-[2.8rem]">
-          <motion.img 
-            src={blog.img} 
-            loading="lazy"
-            className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-          
-          <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 right-6">
-            <h3 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[0.9] uppercase mb-4">
-              {blog.title}
-            </h3>
-            <div className="flex flex-wrap gap-2 md:gap-4">
-               <span className="text-[8px] md:text-[10px] font-mono text-white/50 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md uppercase tracking-widest">{blog.category}</span>
-               <span className="text-[8px] md:text-[10px] font-mono text-white/50 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md uppercase tracking-widest">{blog.readTime}</span>
-            </div>
-          </div>
+      <div className="relative h-56 sm:h-72 overflow-hidden rounded-[1.5rem] md:rounded-[2rem] z-10">
+        <motion.img 
+          src={blog.img} 
+          whileHover={{ scale: 1.1 }}
+          className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-700"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+        <div className="absolute bottom-4 left-4">
+            <span className="flex items-center gap-2 px-3 py-1 bg-indigo-600/90 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-widest rounded-full border border-white/10">
+                <FaLayerGroup size={10} /> {blog.category}
+            </span>
         </div>
       </div>
 
-      <motion.div 
-        className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 blur-[80px] transition-opacity duration-1000"
-        style={{ backgroundColor: blog.accent }}
-      />
+      <div className="pt-6 pb-2 px-2" style={{ transform: "translateZ(30px)" }}>
+        <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-tight group-hover:text-indigo-400 transition-colors">
+          {blog.title}
+        </h3>
+        <p className="text-slate-400 text-sm leading-relaxed mb-6 line-clamp-2">
+          {blog.description}
+        </p>
+
+        <div className="flex items-center justify-between border-t border-white/5 pt-5">
+          <div className="flex flex-col">
+            <span className="text-[9px] text-slate-500 uppercase tracking-widest mb-1 font-mono">Metric.Time</span>
+            <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold">
+              <FaClock /> {blog.readTime}
+            </div>
+          </div>
+          <motion.a 
+            href={blog.link}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center bg-white text-black rounded-2xl transition-all"
+          >
+            <FaPlus size={14} />
+          </motion.a>
+        </div>
+      </div>
     </motion.div>
   );
 };
 
 const Blog = () => {
-  const [isHovering, setIsHovering] = useState(false);
-  const blogs = [
-    { id: 1, title: "JVM Deep", category: "Backend", accent: "#6366f1", readTime: "8m", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070" },
-    { id: 2, title: "Tailwind UI", category: "Design", accent: "#06b6d4", readTime: "5m", img: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1931" },
-    { id: 3, title: "Async Pro", category: "Dev", accent: "#f59e0b", readTime: "12m", img: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?q=80&w=2070" },
-  ];
+  const [filter, setFilter] = useState("All");
+  const categories = ["All", "Backend", "Design", "Development"];
 
   return (
-    <div className="bg-[#030303] min-h-screen text-white selection:bg-white selection:text-black sm:cursor-none overflow-x-hidden">
-      <GrainOverlay />
-      <ScrollProgress />
-      <CustomCursor isHovering={isHovering} />
+    <section className="py-12 md:py-32 bg-[#030303] relative overflow-hidden min-h-screen">
+      {/* Texture & Glow */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute top-0 -left-10 w-64 md:w-96 h-64 md:h-96 bg-indigo-600/20 blur-[100px] md:blur-[150px] rounded-full" />
 
-      <section className="container mx-auto px-4 sm:px-8 pt-32 md:pt-60 pb-20 md:pb-40">
-        <header className="mb-16 md:mb-32 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        
+        {/* MAINTAINED STYLISH HEADER */}
+        <div className="mb-16 md:mb-24 space-y-4 md:space-y-6">
           <motion.div 
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            className="flex items-center gap-3 mb-6 md:mb-10"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-3 text-indigo-500 font-mono text-[9px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em]"
           >
-            <FaTerminal className="text-indigo-500 text-xs animate-pulse" />
-            <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] text-white/40">Latest_Artifacts_v2.0</span>
+            <FaTerminal className="animate-pulse" /> Latest_Logs.v2
           </motion.div>
-          
-          <h1 className="text-[clamp(3.5rem,15vw,14rem)] font-[1000] leading-[0.75] tracking-[-0.06em] uppercase">
-            Radical<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "max(1px, 0.05vw) rgba(255,255,255,0.2)" }}>Ideas.</span>
-          </h1>
-        </header>
 
-        {/* Responsive Grid: 1 col on mobile, 2 col on large md+ */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 lg:gap-16">
-          {blogs.map((blog, i) => (
-            <div key={blog.id} className={i === 2 ? "md:col-span-2 lg:col-span-1" : ""}>
-               <BlogCard blog={blog} index={i} setCursorHover={setIsHovering} />
-            </div>
-          ))}
+          <div className="relative group cursor-default">
+            {/* Outline Background Text (Responsive hidden on small screens if preferred, but here scaled) */}
+            <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-[1000] leading-none tracking-[-0.06em] text-white/5 absolute top-0 left-0 select-none">
+                LATEST <br /> THOUGHTS
+            </h2>
+            
+            {/* Main Animated Text (Responsive scaling) */}
+            <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-[1000] leading-none tracking-[-0.06em] text-white relative">
+                <motion.span 
+                  initial={{ clipPath: "inset(0 100% 0 0)" }}
+                  whileInView={{ clipPath: "inset(0 0% 0 0)" }}
+                  transition={{ duration: 1, ease: "circOut" }}
+                  className="block"
+                >
+                  LATEST
+                </motion.span>
+                <span className="block text-transparent py-1 md:py-2" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>
+                  THOUGHTS<span className="text-indigo-600">.</span>
+                </span>
+            </h2>
+          </div>
+
+          
+
+          {/* RESPONSIVE CATEGORY TABS (Scrollable on Mobile) */}
+          <div className="flex overflow-x-auto pb-4 pt-4 md:pt-8 gap-3 no-scrollbar scroll-smooth">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`relative flex-shrink-0 px-6 md:px-8 py-2.5 md:py-3 rounded-2xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all ${
+                  filter === cat ? "text-black" : "text-white border border-white/10 hover:border-white/40"
+                }`}
+              >
+                <span className="relative z-10">{cat}</span>
+                {filter === cat && (
+                  <motion.div 
+                    layoutId="activeTab" 
+                    className="absolute inset-0 bg-white rounded-2xl z-0 shadow-[0_10px_20px_rgba(255,255,255,0.1)]" 
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <footer className="mt-32 md:mt-60 pb-10 border-t border-white/5 pt-16 flex flex-col lg:flex-row justify-between items-start gap-12">
-            <div className="max-w-2xl">
-                <h4 className="text-3xl md:text-5xl font-black tracking-tighter mb-6 md:mb-8 italic text-indigo-500 leading-none">The Modern Standard.</h4>
-                <p className="text-lg md:text-2xl text-white/40 leading-relaxed tracking-tight">
-                    Optimized for every viewport. Engineered for high-fidelity interaction. Radical simplicity meets technical complexity.
-                </p>
+        {/* RESPONSIVE GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+          <AnimatePresence mode="popLayout">
+            {blogs
+              .filter(b => filter === "All" || b.category === filter)
+              .map((blog, index) => (
+                <BlogCard key={blog.id} blog={blog} index={index} />
+              ))}
+          </AnimatePresence>
+        </div>
+
+        {/* RESPONSIVE FOOTER */}
+        <div className="mt-20 md:mt-32 pt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4 text-center sm:text-left">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
+                <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Sys.Operational // 2026</span>
             </div>
-            
             <motion.div 
-                whileHover={{ x: 20 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full lg:w-auto bg-white/5 border border-white/10 px-8 py-6 md:px-12 md:py-8 rounded-full text-[10px] md:text-[12px] font-black uppercase tracking-[0.5em] flex items-center justify-center gap-6 cursor-pointer hover:bg-white hover:text-black transition-all duration-500"
+              whileHover={{ x: 10 }}
+              className="text-white font-black text-[10px] uppercase tracking-[0.3em] cursor-pointer flex items-center gap-3 group"
             >
-                View Archive <FaArrowRight />
+                View Archive <FaArrowRight className="text-indigo-600 group-hover:translate-x-2 transition-transform" />
             </motion.div>
-        </footer>
-      </section>
-    </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
