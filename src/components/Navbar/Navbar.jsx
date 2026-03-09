@@ -117,48 +117,90 @@ function Navbar() {
           </button>
         </div>
 
-        {/* 6. FULL SCREEN OVERLAY MENU */}
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.div 
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-0 bg-white z-[150] flex flex-col p-10 lg:hidden"
+      {/* 6. FULL SCREEN OVERLAY MENU */}
+<AnimatePresence>
+  {menuOpen && (
+    <motion.div 
+      initial={{ x: '100%', borderRadius: '100px 0 0 100px' }}
+      animate={{ x: 0, borderRadius: '0' }}
+      exit={{ x: '100%', borderRadius: '100px 0 0 100px' }}
+      transition={{ type: "spring", damping: 30, stiffness: 200 }}
+      className="fixed inset-0 bg-white z-[150] flex flex-col p-8 lg:hidden shadow-2xl"
+    >
+      {/* 1. Menu Top Bar */}
+      <div className="flex justify-between items-center mb-16">
+        <motion.span 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="font-[1000] text-3xl tracking-tighter text-slate-950"
+        >
+          V.
+        </motion.span>
+        
+        <motion.button 
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setMenuOpen(false)} 
+          className="p-5 bg-slate-900 text-white rounded-full shadow-xl"
+        >
+          <HiX size={26}/>
+        </motion.button>
+      </div>
+
+      {/* 2. Navigation Links (Deep Black Text) */}
+      <div className="flex flex-col gap-4">
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mb-4 ml-1">Menu</p>
+        
+        {navItems.map((item, i) => (
+          <motion.div
+            key={item}
+            initial={{ x: 80, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ 
+              delay: 0.2 + (i * 0.1), 
+              type: "spring", 
+              stiffness: 100, 
+              damping: 20 
+            }}
+          >
+            <button
+              onClick={() => scrollToSection(item)}
+              // text-slate-950 is the "True Black" you're looking for
+              className="group relative flex items-center gap-6 text-left"
             >
-              <div className="flex justify-between items-center mb-20">
-                <span className="font-black text-2xl tracking-tighter">V.</span>
-                <button onClick={() => setMenuOpen(false)} className="p-4 bg-slate-100 rounded-full"><HiX size={24}/></button>
-              </div>
+              <span className="text-sm font-black text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity">/0{i+1}</span>
+              <span className="text-6xl font-[1000] uppercase tracking-tighter text-slate-950 group-hover:text-indigo-600 transition-all duration-300 group-hover:pl-4">
+                {item}
+              </span>
+            </button>
+          </motion.div>
+        ))}
+      </div>
 
-              <div className="flex flex-col gap-6">
-                {navItems.map((item, i) => (
-                  <motion.button
-                    initial={{ x: 50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: i * 0.1 }}
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className="text-left text-5xl font-black uppercase tracking-tighter hover:text-indigo-600 transition-colors"
-                  >
-                    {item}
-                  </motion.button>
-                ))}
-              </div>
+      {/* 3. Bottom Quick Contact */}
+      <div className="mt-auto border-t border-slate-100 pt-10 flex justify-between items-end">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Located In</p>
+          <p className="text-slate-950 font-black text-xl">Maharashtra, India</p>
+        </motion.div>
 
-              <div className="mt-auto border-t border-slate-100 pt-10 flex justify-between items-end">
-                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Based in</p>
-                  <p className="text-slate-900 font-bold">Maharashtra, India</p>
-                </div>
-                <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 8, ease: "linear" }}>
-                  <FaCompass className="text-indigo-600" size={32} />
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <motion.div 
+          animate={{ rotate: 360 }} 
+          transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+          className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center"
+        >
+          <FaCompass className="text-indigo-600" size={32} />
+        </motion.div>
+      </div>
+
+      {/* Background Decor (Subtle) */}
+      <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-indigo-50 rounded-full blur-3xl -z-10" />
+    </motion.div>
+  )}
+</AnimatePresence>
       </nav>
     </>
   );
