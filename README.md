@@ -7,7 +7,7 @@
 ### 💻 Frontend Developer | Creative Technologist | UI/UX Enthusiast
 
 <p>
-<a href="https://your-portfolio-link.com"><strong>🚀 Explore My Live Portfolio »</strong></a>
+<a href="https://protfolio-no-4.vercel.app/"><strong>🚀 Explore My Live Portfolio »</strong></a>
 </p>
 
 </div>
@@ -50,6 +50,7 @@ Modern **blurred backgrounds, soft shadows, and subtle borders** to create an el
 # 🚀 Featured Projects
 
 ## 🌐 Developer Portfolio
+
 A modern portfolio website designed to showcase projects, skills, and development experience.
 
 **Features**
@@ -63,8 +64,8 @@ A modern portfolio website designed to showcase projects, skills, and developmen
 
 React • Tailwind CSS • Framer Motion
 
-🔗 Live Demo: https://your-portfolio-link.com  
-🔗 GitHub Repo: https://github.com/yourusername/project
+🔗 Live Demo: https://protfolio-no-4.vercel.app/  
+🔗 GitHub Repo: https://github.com/vishaldeshmukh34
 
 ---
 
@@ -82,7 +83,7 @@ A clean and responsive blog interface built using modern frontend technologies.
 
 React • Tailwind CSS
 
-🔗 GitHub Repo: https://github.com/yourusername/project
+🔗 GitHub Repo: https://github.com/vishaldeshmukh34
 
 ---
 
@@ -90,9 +91,9 @@ React • Tailwind CSS
 
 <div align="center">
 
-<img height="180em" src="https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
+<img height="180em" src="https://github-readme-stats.vercel.app/api?username=vishaldeshmukh34&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
 
-<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_USERNAME&layout=compact&theme=tokyonight"/>
+<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=vishaldeshmukh34&layout=compact&theme=tokyonight"/>
 
 </div>
 
@@ -102,15 +103,15 @@ React • Tailwind CSS
 
 <div align="left">
 
-<a href="https://linkedin.com/in/YOUR_LINKEDIN">
+<a href="https://www.linkedin.com/in/vishal-deshmukh79/">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/>
 </a>
 
-<a href="mailto:your-email@gmail.com">
+<a href="mailto:vishaldeshmkh7972@gmail.com">
 <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"/>
 </a>
 
-<a href="https://github.com/YOUR_USERNAME">
+<a href="https://github.com/vishaldeshmukh34">
 <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/>
 </a>
 
@@ -118,16 +119,9 @@ React • Tailwind CSS
 
 ---
 
-# 🎨 Styling Ideas to Make README Even Better
+# 👀 Profile Visitors
 
-✨ Add **Shields.io badges** for technologies  
-✨ Add a **GIF preview of your portfolio UI**  
-✨ Use a **sky-blue → deep-indigo gradient theme**  
-✨ Add **visitor counter badge**
-
-Example:
-
-![Visitors](https://komarev.com/ghpvc/?username=YOUR_USERNAME&color=blue)
+![Visitors](https://komarev.com/ghpvc/?username=vishaldeshmukh34&color=blue)
 
 ---
 
@@ -136,3 +130,9 @@ Example:
 > Always learning. Always building. Always improving.
 
 🚀 Passionate about creating **modern, responsive, and interactive web experiences.**
+
+
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript)
+![FramerMotion](https://img.shields.io/badge/FramerMotion-black?style=for-the-badge)
