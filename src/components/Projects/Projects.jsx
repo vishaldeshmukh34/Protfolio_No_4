@@ -26,7 +26,7 @@ const projectsData = [
     longDesc: "A fully responsive car rental website designed with a focus on typography and clean user paths. Built using pure HTML, CSS, and vanilla JavaScript for high performance.",
     tech: ["HTML5", "CSS3", "JavaScript"],
     icon: <FaCar />,
-    live: "#",
+    live: "https://vishaldeshmukh34.github.io/Car-Rental_project/",
     code: "https://github.com/vishaldeshmukh34/Car-Rental_project",
     image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
     size: "medium"
@@ -38,7 +38,7 @@ const projectsData = [
     longDesc: "A comprehensive LMS where students can visualize their learning journey through structured roadmaps. Features a robust backend with Node and Express.",
     tech: ["MongoDB", "Express", "React", "Node"],
     icon: <FaLaptopCode />,
-    live: "#",
+    live: "https://learnwithvishal.netlify.app/",
     code: "https://github.com/vishaldeshmukh34/LearnwWthVishal",
     image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=2074&auto=format&fit=crop",
     size: "medium"
@@ -50,7 +50,7 @@ const projectsData = [
     longDesc: "A deep dive into complex UI components, replicating the Amazon shopping experience including cart management and stripe-integrated checkout simulations.",
     tech: ["React", "Firebase", "CSS Modules"],
     icon: <FaShoppingCart />,
-    live: "#",
+    live: "https://amazonclonebyvishal.netlify.app/",
     code: "https://github.com/vishaldeshmukh34/Amazon-Clone",
     image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop",
     size: "small"
@@ -62,7 +62,7 @@ const projectsData = [
     longDesc: "A visually stunning replica of the Netflix interface. Fetches real-time movie data and trailers, featuring a dynamic banner and horizontal scroll rows.",
     tech: ["React", "TMDB API", "Axios"],
     icon: <FaPlayCircle />,
-    live: "#",
+    live: "https://syrniki-62e66d.netlify.app/",
     code: "https://github.com/vishaldeshmukh34/Netflix-clone",
     image: "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=2070&auto=format&fit=crop",
     size: "medium"
@@ -74,7 +74,7 @@ const projectsData = [
     longDesc: "A smart assistant capable of processing voice commands to perform web searches, open apps, and provide weather updates using Web Speech API.",
     tech: ["JavaScript", "Web Speech API", "OpenWeather API"],
     icon: <FaRobot />,
-    live: "#",
+    live: "https://vishaldeshmukh34.github.io/My-Virtual-Assistant/",
     code: "https://github.com/vishaldeshmukh34/My-Virtual-Assistant",
     image: "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2070&auto=format&fit=crop",
     size: "small"

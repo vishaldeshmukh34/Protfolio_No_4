@@ -14,7 +14,7 @@ const projects = [
     desc: "The initial blueprint. A clean, HTML/CSS focused foundation exploring core layout principles.",
     tags: ["HTML", "CSS", "JS"],
     img: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=2069",
-    link: "#",
+    link: "https://vishaldeshmukhporfolio.netlify.app/",
     github: "https://github.com/vishaldeshmukh34/My-Porfolio.1",
     metric: "Legacy v0.1"
   },
@@ -26,7 +26,7 @@ const projects = [
     desc: "Evolution into React. Implementing component-based architecture and basic state management.",
     tags: ["React", "Tailwind"],
     img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=2055",
-    link: "#",
+    link: "https://vishaldeshmukhportfolio2026.netlify.app/",
     github: "https://github.com/vishaldeshmukh34/My-Porfolio.2",
     metric: "Stable v0.2"
   },
@@ -38,7 +38,7 @@ const projects = [
     desc: "The Framer Motion era. High-fidelity animations and advanced UI/UX patterns.",
     tags: ["Framer", "Next.js"],
     img: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1964",
-    link: "#",
+    link: "https://protfolio-no-4.vercel.app/",
     github: "https://github.com/vishaldeshmukh34/My-Profolio.3",
     metric: "Current v0.3"
   },

@@ -15,8 +15,8 @@ const projects = [
     img: "https://images.unsplash.com/photo-1503221043305-f7498f8b7888?q=80&w=2070&auto=format&fit=crop",
     icon: <FaGlobe />,
     color: "#10b981",
-    link: "#",
-    github: "#",
+    link: "https://vishaldeshmukh34.github.io/NEW-ADVENTURES-Website/",
+    github: "https://github.com/vishaldeshmukh34/NEW-ADVENTURES-Website",
     snippet: `const TravelPath = () => {
   return <motion.path 
     initial={{ pathLength: 0 }}
@@ -34,8 +34,8 @@ const projects = [
     img: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?q=80&w=2070&auto=format&fit=crop",
     icon: <FaGamepad />,
     color: "#a855f7",
-    link: "#",
-    github: "#",
+    link: "https://venerable-muffin-a22d02.netlify.app/",
+    github: "https://github.com/vishaldeshmukh34/Quiz-app",
     snippet: `const submitScore = async (val) => {
   await db.collection('leaderboard').add({
     score: val,
