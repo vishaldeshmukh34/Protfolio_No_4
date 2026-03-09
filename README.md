@@ -1,16 +1,110 @@
-# React + Vite
+<h1 align="center">Hi 👋, I'm Vishal Deshmukh</h1>
+<h3 align="center">Frontend Developer | React • Tailwind • Framer Motion</h3>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+Passionate about building modern, responsive, and interactive web experiences.
+</p>
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 About Me
 
-## React Compiler
+- 🎓 BCA Student passionate about **Frontend Development**
+- 💻 Skilled in **React JS, Tailwind CSS, JavaScript**
+- ✨ Love building **modern UI/UX with smooth animations**
+- 🌱 Currently learning **advanced React and modern web technologies**
+- 🎯 Goal: Build **high-performance web applications**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🌐 Portfolio
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🔗 **Portfolio Website:**  
+https://your-portfolio-link.com
+
+💻 **GitHub:**  
+https://github.com/yourusername
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend**
+
+- React JS  
+- JavaScript (ES6+)  
+- HTML5  
+- CSS3  
+- Tailwind CSS  
+
+**Animation & UI**
+
+- Framer Motion  
+- Responsive Design  
+- Modern UI/UX
+
+**Tools**
+
+- Git  
+- GitHub  
+- VS Code  
+- Vercel / Netlify
+
+---
+
+## 📂 Featured Projects
+
+### 🚀 Developer Portfolio
+Modern portfolio website built using React, Tailwind CSS, and Framer Motion.
+
+**Features**
+- Interactive UI animations
+- Fully responsive design
+- Smooth page transitions
+- Modern project showcase
+
+**Tech Stack**
+React • Tailwind • Framer Motion
+
+🔗 Live Demo: https://your-portfolio-link.com  
+🔗 GitHub Repo: https://github.com/yourusername/project
+
+---
+
+### 💻 Blog UI Website
+
+A responsive blog interface built with modern frontend technologies.
+
+**Features**
+- Animated blog cards
+- Responsive layout
+- Clean UI/UX
+
+**Tech Stack**
+React • Tailwind CSS
+
+🔗 GitHub Repo: https://github.com/yourusername/project
+
+---
+
+## 📊 GitHub Stats
+
+<p align="center">
+<img src="https://github-readme-stats.vercel.app/api?username=yourusername&show_icons=true&theme=tokyonight" />
+</p>
+
+<p align="center">
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=yourusername&theme=tokyonight" />
+</p>
+
+---
+
+## 🌍 Connect With Me
+
+LinkedIn: https://linkedin.com/in/yourprofile  
+GitHub: https://github.com/yourusername  
+Portfolio: https://your-portfolio-link.com  
+
+---
+
+⭐ Always learning, always building, and improving my development skills.
