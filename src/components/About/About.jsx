@@ -4,7 +4,7 @@ import {
   FaCode, FaGraduationCap, FaLaptopCode, FaExternalLinkAlt, 
   FaCheckCircle, FaCalendarAlt, FaMapMarkerAlt 
 } from "react-icons/fa";
-import profileImg from "../../assets/vishal2.jpg"; 
+import profileImg from "../../assets/profile2.webp"; 
 
 // --- Progress Circle Component ---
 const SkillCircle = ({ percent, label, delay }) => (
