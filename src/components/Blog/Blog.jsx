@@ -8,7 +8,7 @@ const blogs = [
     title: "Mastering Core Java", 
     category: "Backend", 
     description: "Deep dive into JVM internals and high-concurrency patterns for scalable enterprise apps.", 
-    link: "https://github.com/vishaldeshmukh34/Servlet/tree/main/Servlet", 
+    link: "https://blog1corejava.netlify.app/", 
     readTime: "8 min", 
     img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" 
   },
@@ -17,7 +17,7 @@ const blogs = [
     title: "Tailwind CSS Mastery", 
     category: "Design", 
     description: "Architecting scalable design systems with utility-first principles and fluid layouts.", 
-    link: "#", 
+    link: "https://blog2tailwincss.netlify.app/", 
     readTime: "5 min", 
     img: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1931&auto=format&fit=crop" 
   },
@@ -26,7 +26,7 @@ const blogs = [
     title: "Modern JavaScript", 
     category: "Development", 
     description: "Explaining the Event Loop and Async patterns that power the high-performance modern web.", 
-    link: "#", 
+    link: "https://blog3javascript.netlify.app/", 
     readTime: "12 min", 
     img: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?q=80&w=2070&auto=format&fit=crop" 
   },
