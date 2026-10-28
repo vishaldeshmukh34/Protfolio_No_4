@@ -1,36 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  FaArrowUp, FaGithub, FaLinkedinIn, FaInstagram, 
-  FaHeart, FaEnvelope, FaClock, FaArrowRight
+  FaArrowUp, FaGithub, FaLinkedinIn, 
+  FaEnvelope, FaClock, FaArrowRight
 } from "react-icons/fa";
+import { HiSparkles } from "react-icons/hi2";
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
   }
 };
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5 } }
+  visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
 };
 
-const SocialLink = ({ icon, href }) => (
+const SocialBadge = ({ icon, href, label }) => (
   <motion.a
     href={href}
-    variants={itemVariants}
-    whileTap={{ scale: 0.9, backgroundColor: "rgba(99, 102, 241, 0.4)" }}
-    whileHover={{ scale: 1.1, rotate: -5, color: "#fff" }} 
-    className="relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl transition-all duration-300"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={label}
+    whileHover={{ scale: 1.05, y: -2 }}
+    whileTap={{ scale: 0.95 }}
+    className="flex items-center gap-2.5 px-4 py-3 bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 hover:border-indigo-500/40 rounded-2xl backdrop-blur-xl transition-all duration-300 text-slate-300 hover:text-white group"
   >
-    <span className="text-slate-500 transition-colors text-lg md:text-xl">{icon}</span>
+    <span className="text-base text-indigo-400 group-hover:scale-110 transition-transform">{icon}</span>
+    <span className="text-xs font-medium tracking-wide uppercase">{label}</span>
   </motion.a>
 );
 
-function AdvanceFooter() {
+function AdvanceFooter({ 
+  isAvailable = false, 
+  availableStatusText = "Busy", 
+  activeStatusText = "Available for Work" 
+}) {
   const [showScroll, setShowScroll] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [time, setTime] = useState("");
@@ -44,24 +52,42 @@ function AdvanceFooter() {
     updateTime();
     const timer = setInterval(updateTime, 1000);
     
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(scrollHeight > 0 ? (currentScroll / scrollHeight) * 100 : 0);
-      setShowScroll(currentScroll > 400);
+    const handleScrollOrResize = () => {
+      const totalScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      
+      if (windowHeight > 0) {
+        const progress = (totalScroll / windowHeight) * 100;
+        setScrollProgress(progress);
+        setShowScroll(totalScroll > 300);
+      }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => { clearInterval(timer); window.removeEventListener("scroll", handleScroll); };
+
+    window.addEventListener("scroll", handleScrollOrResize);
+    window.addEventListener("resize", handleScrollOrResize);
+    handleScrollOrResize();
+
+    return () => { 
+      clearInterval(timer); 
+      window.removeEventListener("scroll", handleScrollOrResize);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
   }, []);
 
+  const currentStatusText = isAvailable ? activeStatusText : availableStatusText;
+
+  // SVG circle calculation for r = 20
+  const circleRadius = 20;
+  const circumference = 2 * Math.PI * circleRadius;
+  const strokeDashoffset = circumference - (scrollProgress / 100) * circumference;
+
   return (
-    <footer className="relative bg-[#020204] text-white pt-20 pb-8 md:pt-32 md:pb-12 overflow-hidden selection:bg-indigo-500/30">
+    <footer className="relative bg-[#030305] text-white pt-24 pb-12 overflow-hidden selection:bg-indigo-500/30">
       
-      {/* 1. BRUTALIST BACKGROUND ELEMENTS */}
-      <div className="absolute inset-0 z-0 opacity-20" 
-           style={{ backgroundImage: `radial-gradient(#1e293b 1px, transparent 1px)`, backgroundSize: '30px 30px' }} />
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-indigo-600/10 blur-[120px] rounded-full" />
+      {/* Ambient Mesh Gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+      <div className="absolute top-[-20%] left-1/4 w-[500px] h-[500px] bg-indigo-600/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 blur-[150px] rounded-full pointer-events-none" />
 
       <motion.div 
         variants={containerVariants}
@@ -70,141 +96,167 @@ function AdvanceFooter() {
         viewport={{ once: true }}
         className="max-w-7xl mx-auto px-6 relative z-10"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
+        {/* Bento Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
-          {/* 2. BRUTALIST BRANDING SECTION */}
-          <div className="lg:col-span-7 space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start">
-            <motion.div variants={itemVariants} className="relative group w-full">
-              
-              <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
-                <span className="h-px w-8 bg-indigo-500/50" />
-                <span className="text-[10px] font-black tracking-[0.6em] text-indigo-400 uppercase">Mastery</span>
+          {/* Bento Card 1: Main Brand */}
+          <motion.div variants={itemVariants} className="lg:col-span-7 p-8 md:p-10 bg-white/[0.015] border border-white/[0.08] rounded-3xl backdrop-blur-2xl flex flex-col justify-between relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            
+            <div className="space-y-6 relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full">
+                <HiSparkles className="text-indigo-400 text-xs" />
+                <span className="text-[10px] font-mono tracking-widest uppercase text-indigo-300">Frontend Architecture</span>
               </div>
 
-              <div className="relative mb-8">
-                <h2 className="hidden md:block text-[8rem] lg:text-[10rem] font-[1000] leading-none tracking-[-0.08em] text-white/[0.02] absolute top-[-20%] left-[-2%] select-none uppercase pointer-events-none">
-                    NEXT-GEN
-                </h2>
-
-                <h2 className="text-[clamp(2.8rem,11vw,6rem)] font-[1000] tracking-[-0.04em] md:tracking-[-0.06em] leading-[0.85] uppercase">
-                    <motion.span 
-                        initial={{ clipPath: "inset(0 100% 0 0)" }}
-                        whileInView={{ clipPath: "inset(0 0% 0 0)" }}
-                        transition={{ duration: 1, ease: "circOut" }}
-                        className="block text-white"
-                    >
-                        NEXT-GEN
-                    </motion.span>
-                    <span className="block text-transparent py-2 transition-all duration-700 hover:tracking-normal" 
-                          style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>
-                        CREATIVE<span className="text-indigo-500 drop-shadow-[0_0_10px_rgba(99,102,241,0.5)]">.</span>
-                    </span>
-                </h2>
-              </div>
-
-              <p className="text-slate-400 max-w-md mx-auto lg:mx-0 text-base md:text-lg font-light leading-relaxed">
-                Fusing code with aesthetics to build <span className="text-white border-b border-indigo-500/30">immersive</span> digital realities.
-              </p>
-            </motion.div>
-
-            {/* STATUS DASHBOARD - Reduced Size */}
-            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-2 items-center">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border border-white/10 rounded-xl backdrop-blur-md">
-                <FaClock className="text-indigo-400 text-[10px] animate-pulse" />
-                <span className="text-[9px] font-mono text-slate-300 font-bold uppercase tracking-widest">{time}</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/[0.03] border border-emerald-500/20 rounded-xl backdrop-blur-md">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+              <h2 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
+                Let's Build <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                  Something Iconic.
                 </span>
-                <span className="text-[9px] font-black text-emerald-400 uppercase tracking-widest">Active_Node</span>
-              </div>
-            </motion.div>
-          </div>
+              </h2>
 
-          {/* 3. ACTION GRID */}
-          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-12 w-full">
-            <div className="space-y-6 text-center sm:text-left">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-600">Explore_Paths</h4>
-              <nav className="flex flex-col gap-4">
-                {["Work", "Stack", "Design", "About"].map(item => (
+              <p className="text-slate-400 text-sm md:text-base font-light max-w-lg leading-relaxed">
+                Crafting performant web experiences with fluid micro-interactions, clean design systems, and modern React ecosystems.
+              </p>
+            </div>
+
+            {/* Live Data Widgets */}
+            <div className="flex flex-wrap items-center gap-3 pt-8 relative z-10">
+              <div className="flex items-center gap-2.5 px-4 py-2 bg-white/[0.03] border border-white/10 rounded-xl backdrop-blur-md">
+                <FaClock className="text-indigo-400 text-xs animate-pulse" />
+                <span className="text-xs font-mono text-slate-300 font-bold">{time} IST</span>
+              </div>
+
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl backdrop-blur-md border ${
+                isAvailable ? 'bg-emerald-500/[0.03] border-emerald-500/20' : 'bg-white/[0.03] border-white/10'
+              }`}>
+                <span className="relative flex h-2 w-2">
+                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isAvailable ? 'bg-emerald-400' : 'bg-slate-400'}`} />
+                  <span className={`relative inline-flex rounded-full h-2 w-2 ${isAvailable ? 'bg-emerald-500' : 'bg-slate-500'}`} />
+                </span>
+                <span className={`text-xs font-mono font-bold tracking-wider ${isAvailable ? 'text-emerald-400' : 'text-slate-300'}`}>
+                  {currentStatusText}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Bento Card 2: Navigation & Action Hub */}
+          <motion.div variants={itemVariants} className="lg:col-span-5 p-8 md:p-10 bg-white/[0.015] border border-white/[0.08] rounded-3xl backdrop-blur-2xl flex flex-col justify-between space-y-8">
+            
+            {/* STYLISH NAVIGATION CARDS (Work, About, Resume) */}
+            <div>
+              <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-500 mb-4">Quick Navigation</h4>
+              <div className="grid grid-cols-1 gap-2.5">
+                {[
+                  { label: "Explore Work", sub: "View featured projects", id: "#work", isExternal: false },
+                  { label: "About Me", sub: "Background & skills", id: "#about", isExternal: false },
+                  { label: "Download Resume", sub: "PDF Format", id: "/resume.pdf", isExternal: true }
+                ].map(item => (
                   <motion.a 
-                    key={item} 
-                    whileHover={{ x: 10, color: "#fff" }}
-                    whileTap={{ scale: 0.95 }}
-                    href={`#${item.toLowerCase()}`} 
-                    className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-[0.2em] transition-all flex items-center justify-center sm:justify-start group"
+                    key={item.label} 
+                    whileHover={{ scale: 1.02, x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                    href={item.id} 
+                    {...(item.isExternal ? { download: "Vishal_Deshmukh_Resume.pdf", target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className="group flex items-center justify-between p-3.5 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] hover:border-indigo-500/40 rounded-2xl transition-all duration-300"
                   >
-                    <span className="w-0 group-hover:w-4 h-px bg-indigo-500 mr-0 group-hover:mr-2 transition-all opacity-0 group-hover:opacity-100" />
-                    {item}
+                    <div className="flex items-center gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 group-hover:scale-150 transition-transform" />
+                      <div>
+                        <span className="block text-xs font-bold text-white uppercase tracking-wider group-hover:text-indigo-300 transition-colors">
+                          {item.label}
+                        </span>
+                        <span className="block text-[10px] text-slate-400 font-mono">
+                          {item.sub}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all text-xs font-bold">
+                      {item.isExternal ? "↓" : "→"}
+                    </span>
                   </motion.a>
                 ))}
-              </nav>
+              </div>
             </div>
 
-            <div className="space-y-8 text-center sm:text-left flex flex-col items-center sm:items-start">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-600">Connect_Core</h4>
-              <div className="flex gap-3">
-                <SocialLink icon={<FaGithub />} href="https://github.com/vishaldeshmukh34" />
-                <SocialLink icon={<FaLinkedinIn />} href="https://www.linkedin.com/in/vishal-deshmukh79/" />
-                <SocialLink icon={<FaInstagram />} href="#" />
-                <SocialLink icon={<FaEnvelope />} href="mailto:vishaldeshmukh7972@gmail.com" />
-              </div>
+            {/* LinkedIn Button */}
+            <div className="space-y-3">
+              <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-500">Direct Network</h4>
               
-              <motion.a 
-                href="mailto:vishaldeshmukh7972@gmail.com"
-                whileHover={{ scale: 1.02 }}
+              <motion.a
+                href="https://www.linkedin.com/in/vishal-deshmukh79/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Connect on LinkedIn"
+                whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group w-full flex items-center justify-between p-5 bg-indigo-600 hover:bg-indigo-500 rounded-2xl transition-all duration-300 shadow-xl shadow-indigo-600/20"
+                className="relative group block w-full p-px rounded-2xl overflow-hidden shadow-2xl shadow-indigo-500/10"
               >
-                <span className="text-[11px] font-black uppercase tracking-[0.2em]">Inquire Project</span>
-                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 rounded-2xl opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="relative px-6 py-4 bg-[#07070a] group-hover:bg-[#0c0c12] rounded-2xl flex items-center justify-between transition-all duration-300">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                      <FaLinkedinIn className="text-sm" />
+                    </div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-white group-hover:text-indigo-300 transition-colors">
+                      Connect on LinkedIn
+                    </span>
+                  </div>
+                  <span className="text-indigo-400 font-bold group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </div>
               </motion.a>
             </div>
+
+            {/* Social Badges Row */}
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <SocialBadge icon={<FaGithub />} href="https://github.com/vishaldeshmukh34" label="GitHub" />
+              <SocialBadge icon={<FaEnvelope />} href="mailto:vishaldeshmukh7972@gmail.com" label="Email" />
+            </div>
+
+          </motion.div>
+
+        </div>
+
+        {/* Bottom Bar */}
+        <motion.div variants={itemVariants} className="mt-8 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500 text-xs font-mono">
+          <p>© 2026 VISHAL DESHMUKH. ALL RIGHTS RESERVED.</p>
+          <div className="flex items-center gap-4">
+            <span className="text-slate-400">HANDCRAFTED IN INDIA</span>
+            <span className="w-1 h-1 rounded-full bg-slate-700" />
+            <span className="text-indigo-400">STABLE_BUILD v5.0</span>
           </div>
-        </div>
-
-        {/* 4. REFINED BOTTOM BAR - Reduced Size */}
-        <div className="mt-20 md:mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-          <motion.div variants={itemVariants} className="text-center md:text-left order-2 md:order-1">
-            <p className="text-[8px] font-black text-slate-600 tracking-[0.5em] uppercase">© 2026 VISHAL DESHMUKH</p>
-            <p className="text-[7px] font-mono text-slate-800 uppercase mt-1 tracking-tighter opacity-50">BUILD_VER: 5.0.0_STABLE // JALNA_MAH_IN</p>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center gap-4 md:gap-8 order-1 md:order-2">
-            <div className="flex items-center gap-2 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-               Handcrafted with <FaHeart className="text-indigo-600 text-[10px] animate-bounce" /> in India
-            </div>
-            <div className="text-[8px] font-mono text-slate-400 bg-white/[0.01] px-3 py-1 rounded-full border border-white/5 backdrop-blur-sm">
-              19.8415° N <span className="text-indigo-900/40 mx-1">|</span> 75.8833° E
-            </div>
-          </motion.div>
-        </div>
+        </motion.div>
       </motion.div>
 
-      {/* COMPACT SCROLL PROGRESS */}
+      {/* Floating Scroll-to-Top Indicator */}
       <AnimatePresence>
         {showScroll && (
           <motion.div 
-            initial={{ opacity: 0, scale: 0.5 }} 
-            animate={{ opacity: 1, scale: 1 }} 
-            exit={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.5, y: 20 }} 
+            animate={{ opacity: 1, scale: 1, y: 0 }} 
+            exit={{ opacity: 0, scale: 0.5, y: 20 }}
             className="fixed bottom-8 right-8 z-[100]"
           >
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="group relative w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:bg-white hover:text-indigo-600"
+              aria-label="Scroll to top of page"
+              className="group relative w-12 h-12 bg-indigo-600 hover:bg-white text-white hover:text-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-600/30 transition-all duration-300 backdrop-blur-xl border border-indigo-500/30"
             >
-              <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none">
-                <circle cx="24" cy="24" r="21" fill="transparent" stroke="rgba(255,255,255,0.1)" strokeWidth="2" />
-                <motion.circle
-                  cx="24" cy="24" r="21" fill="transparent" stroke="currentColor" strokeWidth="2"
-                  strokeDasharray="132"
-                  strokeDashoffset={132 - (132 * scrollProgress) / 100}
+              <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none p-1.5" viewBox="0 0 44 44" aria-hidden="true">
+                <circle cx="22" cy="22" r={circleRadius} fill="transparent" stroke="rgba(255,255,255,0.15)" strokeWidth="2.5" />
+                <circle
+                  cx="22" cy="22" r={circleRadius} fill="transparent" stroke="currentColor" strokeWidth="2.5"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
                 />
               </svg>
-              <FaArrowUp className="text-sm group-hover:-translate-y-1 transition-transform" />
+              <FaArrowUp className="text-xs group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </motion.div>
         )}

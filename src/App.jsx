@@ -1,8 +1,7 @@
-import React from "react";
-// 1. IMPORT THE NEW EFFECTS (Ensure the filename matches exactly)
-import { CustomCursor, Magnetic } from "./components/CustomCursor.jsx";
 
-// 2. YOUR EXISTING COMPONENT IMPORTS
+import React from "react";
+import { CustomCursor } from "./components/CustomCursor.jsx";
+
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
@@ -19,17 +18,11 @@ import "./App.css";
 
 function App() {
   return (
-    /** * STYLING UPDATES:
-     * - min-h-screen & bg-[#030305]: Sets the deep dark theme.
-     * - lg:cursor-none: Hides the default system cursor so the CustomCursor takes over.
-     * - selection:bg-indigo-500/30: Adds a premium blue tint when highlighting text.
-     */
     <div className="min-h-screen bg-[#030305] text-white overflow-x-hidden lg:cursor-none selection:bg-indigo-500/30">
-
-      {/* RENDER THE CURSOR AT THE ROOT (Follows user site-wide) */}
+      {/* Custom cursor */}
       <CustomCursor />
 
-      {/* NAVBAR WITH MAGNETIC LOGIC (If you wrap nav items inside Navbar.jsx) */}
+      {/* Navigation */}
       <Navbar />
 
       <main>
@@ -70,12 +63,7 @@ function App() {
         </section>
       </main>
 
-     
-       
-        
-        <Footer />
-      
-
+      <Footer />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import {
   FaCode, FaGraduationCap, FaLaptopCode, FaExternalLinkAlt, 
   FaCheckCircle, FaCalendarAlt, FaMapMarkerAlt 
 } from "react-icons/fa";
-import profileImg from "../../assets/profile2.webp"; 
+import profileImg from "../../assets/vishal2.jpg"; 
 
 // --- Progress Circle Component ---
 const SkillCircle = ({ percent, label, delay }) => (
@@ -61,29 +61,38 @@ function About() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  const experience = [
-    {
-      title: "BCA Graduate",
-      subtitle: "Dr. Babasaheb Ambedkar Marathwada University",
-      date: "2022 - 2025",
-      location: "Chhatrapati Sambhajinagar",
-      desc: "Specialized in computer applications, foundation of Java, and software engineering principles."
-    },
-    {
-      title: "Master of Computer Applications",
-      subtitle: "Dr. Babasaheb Ambedkar Marathwada University",
-      date: "2025 - 2027",
-      location: "Chhatrapati Sambhajinagar",
-      desc: "Advanced studies in software architecture, cloud computing, and complex system design."
-    },
-    {
-      title: "Java Full Stack Specialist",
-      subtitle: "Full Stack Development",
-      date: "2025 - Present",
-      location: "Pune, Maharashtra",
-      desc: "Architecting responsive front-ends with React and scalable back-ends with Spring Boot and Node.js."
-    }
-  ];
+  
+const experience = [
+  {
+    title: "Software Engineer",
+    subtitle: "Dakshabhi IT Solutions · Full-time",
+    date: "Aug 2026 - Present",
+    location: "Pune, Maharashtra",
+    desc: "Developing web applications using Java, Spring Boot, React.js, and MySQL. Building REST APIs, integrating frontend and backend services, and working with Spring Security, JWT, Jenkins, Git, and Maven."
+  },
+  {
+    title: "Jr. Software Developer",
+    subtitle: "TechTech · Full-time",
+    date: "Feb 2026 - Sep 2026",
+    location: "Pune, Maharashtra",
+    desc: "Developed web application features using Java, React.js, and JavaScript. Built responsive interfaces, integrated REST APIs, applied OOP principles, and contributed to debugging, testing, and version control using Git."
+  },
+  {
+    title: "Master of Computer Applications",
+    subtitle: "Dr. Babasaheb Ambedkar Marathwada University",
+    date: "2025 - 2027",
+    location: "Chhatrapati Sambhajinagar",
+    desc: "Pursuing advanced studies in computer applications, software development, database systems, and application architecture."
+  },
+  {
+    title: "Bachelor of Computer Applications",
+    subtitle: "Dr. Babasaheb Ambedkar Marathwada University",
+    date: "2022 - 2025",
+    location: "Chhatrapati Sambhajinagar",
+    desc: "Completed BCA with a foundation in Java programming, computer applications, databases, and software engineering."
+  }
+];
+
 
   return (
     <section id="about" className="relative min-h-screen bg-[#fcfcfd] px-6 py-28 overflow-hidden">
@@ -140,7 +149,7 @@ function About() {
               >
                 <div className="grid grid-cols-3 gap-1">
                   <SkillCircle percent={92} label="React" delay={0.3} />
-                  <SkillCircle percent={88} label="Node" delay={0.4} />
+                  <SkillCircle percent={88} label="SQL" delay={0.4} />
                   <SkillCircle percent={85} label="Java" delay={0.5} />
                 </div>
               </motion.div>
